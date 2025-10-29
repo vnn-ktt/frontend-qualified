@@ -8,6 +8,9 @@
         <q-toggle v-model="isDark" label="Тёмная тема" @update:model-value="toggleTheme" />
       </div>
     </q-card>
+    <div class="tailwind-container">
+      <!-- Контент с Tailwind классами -->
+    </div>
   </div>
 </template>
 
