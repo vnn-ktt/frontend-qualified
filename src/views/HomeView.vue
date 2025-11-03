@@ -1,18 +1,32 @@
 <template>
-  <div class="min-h-screen flex flex-col items-center justify-center bg-[var(--color-bg)] text-[var(--color-text)] transition-colors">
-    <q-card class="p-4 w-80">
-      <h2 class="text-xl font-bold mb-4">Тест тем</h2>
-      <q-btn color="primary" label="Primary button" class="mb-4" />
-      <q-btn color="secondary" label="Secondary" />
-      <div class="mt-4">
-        <q-toggle v-model="isDark" label="Тёмная тема" @update:model-value="toggleTheme" />
-      </div>
+  <q-page class="flex flex-center bg-grey-1 q-pa-xl">
+    <q-card class="q-pa-xl text-center" flat bordered>
+      <q-card-section>
+        <div class="text-h5 text-primary">welcome to the qualified</div>
+        <div class="text-subtitle2 text-grey-7 q-mt-sm">
+          test your javascript and golang skills
+        </div>
+      </q-card-section>
+
+      <q-card-actions align="center">
+        <q-btn
+          color="primary"
+          label="start quiz"
+          size="lg"
+          unelevated
+          @click="startQuiz"
+        />
+      </q-card-actions>
     </q-card>
-  </div>
+  </q-page>
 </template>
 
 <script setup lang="ts">
-import { useTheme } from '@/composables/useTheme'
+import { useRouter } from 'vue-router'
 
-const { isDark, toggleTheme } = useTheme()
+const router = useRouter()
+
+function startQuiz() {
+  router.push({name: 'quiz'})
+}
 </script>
