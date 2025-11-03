@@ -1,12 +1,11 @@
 <template>
   <q-layout view="hHh lpR fFf">
     <!-- HEADER -->
-    <q-header elevated class="bg-dark text-white">
+    <q-header>
       <q-toolbar>
         <q-btn
             flat
             dense
-            round
             icon="menu"
             size="sm"
             @click="leftDrawerOpen = !leftDrawerOpen"
@@ -24,7 +23,7 @@
       </q-toolbar>
     </q-header>
 
-    <!-- DRAWER (MENU) -->
+    <!-- DRAWER -->
     <q-drawer
         v-model="leftDrawerOpen"
         side="left"
@@ -34,18 +33,30 @@
     >
       <q-list>
         <q-item clickable v-ripple @click="goHome">
-          <q-item-section avatar><q-icon name="home" /></q-item-section>
-          <q-item-section>Home</q-item-section>
+          <q-item-section avatar>
+            <q-icon name="home" />
+          </q-item-section>
+          <q-item-section>
+            hometown
+          </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple @click="goAbout">
-          <q-item-section avatar><q-icon name="info" /></q-item-section>
-          <q-item-section>About</q-item-section>
+          <q-item-section avatar>
+            <q-icon name="info" />
+          </q-item-section>
+          <q-item-section>
+            about
+          </q-item-section>
         </q-item>
 
         <q-item clickable v-ripple @click="goSettings">
-          <q-item-section avatar><q-icon name="settings" /></q-item-section>
-          <q-item-section>Settings</q-item-section>
+          <q-item-section avatar>
+            <q-icon name="settings" />
+          </q-item-section>
+          <q-item-section>
+            settings
+          </q-item-section>
         </q-item>
       </q-list>
     </q-drawer>
@@ -68,7 +79,6 @@ const isDark = ref($q.dark.isActive)
 const router = useRouter()
 
 const toggleDarkMode = () => {
-  isDark.value = !isDark.value
   $q.dark.set(isDark.value)
 }
 const goHome = () => router.push('/')
