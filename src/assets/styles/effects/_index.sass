@@ -1,0 +1,40 @@
+// Импорт всех файлов с эффектами
+@import 'animations'
+@import 'glows'
+@import 'scans'
+@import 'transitions'
+@import 'text'
+@import 'buttons'
+@import 'inputs'
+
+// Глобальные киберпанк переменные
+:root
+  --cyber-glow: #00D4FF
+  --cyber-border: #0066FF
+  --cyber-bg-card: #001233
+  --cyber-text: #E0F7FF
+
+// Общие стили для киберпанк элементов
+.cyber-panel
+  background: var(--cyber-bg-card)
+  border: 1px solid var(--cyber-border)
+  position: relative
+  overflow: hidden
+
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    height: 1px
+    background: linear-gradient(90deg, transparent, var(--cyber-glow), transparent)
+
+.cyber-card
+  @extend .cyber-panel
+  border-radius: 8px
+  padding: 20px
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.1)
+
+  &.hover-glow:hover
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.2)

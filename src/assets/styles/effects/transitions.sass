@@ -1,0 +1,71 @@
+// Базовые переходы
+.cyber-transition
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1)
+
+.cyber-transition-slow
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1)
+
+.cyber-transition-fast
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1)
+
+// Специфичные переходы
+.transition-glow
+  transition: box-shadow 0.3s ease, transform 0.3s ease
+
+.transition-color
+  transition: color 0.3s ease, background-color 0.3s ease
+
+.transition-border
+  transition: border-color 0.3s ease, box-shadow 0.3s ease
+
+// Эффекты появления
+.fade-in-up
+  opacity: 0
+  transform: translateY(30px)
+  transition: all 0.5s ease
+
+  &.visible
+    opacity: 1
+    transform: translateY(0)
+
+.fade-in-down
+  opacity: 0
+  transform: translateY(-30px)
+  transition: all 0.5s ease
+
+  &.visible
+    opacity: 1
+    transform: translateY(0)
+
+.fade-in-left
+  opacity: 0
+  transform: translateX(-30px)
+  transition: all 0.5s ease
+
+  &.visible
+    opacity: 1
+    transform: translateX(0)
+
+.fade-in-right
+  opacity: 0
+  transform: translateX(30px)
+  transition: all 0.5s ease
+
+  &.visible
+    opacity: 1
+    transform: translateX(0)
+
+// Ступенчатые анимации (как в терминале)
+.terminal-type
+  overflow: hidden
+  border-right: 2px solid var(--cyber-glow)
+  animation: terminal-blink 1s step-end infinite
+
+  &.typing
+    animation: typing 3s steps(40, end), terminal-blink 1s step-end infinite
+
+@keyframes typing
+  from
+    width: 0
+  to
+    width: 100%

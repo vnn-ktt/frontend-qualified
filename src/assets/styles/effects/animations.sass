@@ -1,0 +1,138 @@
+// Сканирующие лучи
+@keyframes scan-line
+  0%
+    left: -100%
+    opacity: 0
+  50%
+    opacity: 1
+  100%
+    left: 100%
+    opacity: 0
+
+@keyframes scan-vertical
+  0%
+    top: -100%
+    opacity: 0
+  50%
+    opacity: 1
+  100%
+    top: 100%
+    opacity: 0
+
+// Пульсация неона
+@keyframes neon-pulse
+  0%, 100%
+    opacity: 1
+    text-shadow: 0 0 10px var(--cyber-glow), 0 0 20px var(--cyber-glow)
+  50%
+    opacity: 0.7
+    text-shadow: 0 0 5px var(--cyber-glow), 0 0 10px var(--cyber-glow)
+
+// Мерцание как неоновая вывеска
+@keyframes neon-flicker
+  0%, 18%, 22%, 25%, 53%, 57%, 100%
+    opacity: 1
+    text-shadow: 0 0 10px var(--cyber-glow), 0 0 20px var(--cyber-glow)
+  20%, 24%, 55%
+    opacity: 0.8
+    text-shadow: 0 0 5px var(--cyber-glow)
+
+// Загрузка/передача данных
+@keyframes data-stream
+  0%
+    transform: translateX(-100%)
+  100%
+    transform: translateX(100%)
+
+// Вращение шестеренок/техники
+@keyframes cyber-rotate
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(360deg)
+
+@keyframes cyber-rotate-reverse
+  0%
+    transform: rotate(0deg)
+  100%
+    transform: rotate(-360deg)
+
+// Плавающий эффект
+@keyframes cyber-float
+  0%, 100%
+    transform: translateY(0px)
+  50%
+    transform: translateY(-10px)
+
+// Мигание как на терминале
+@keyframes terminal-blink
+  0%, 50%
+    opacity: 1
+  51%, 100%
+    opacity: 0
+
+// Волновой эффект
+@keyframes wave
+  0%
+    transform: scale(1)
+    opacity: 1
+  100%
+    transform: scale(2)
+    opacity: 0
+
+// Эффект матрицы (падающие символы)
+@keyframes matrix-fall
+  0%
+    transform: translateY(-100%)
+    opacity: 0
+  5%
+    opacity: 1
+  95%
+    opacity: 1
+  100%
+    transform: translateY(1000%)
+    opacity: 0
+
+// Классы для применения анимаций
+.scan-line
+  position: relative
+  overflow: hidden
+
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: -100%
+    width: 100%
+    height: 2px
+    background: linear-gradient(90deg, transparent, var(--cyber-glow), transparent)
+    animation: scan-line 3s linear infinite
+
+.neon-pulse
+  animation: neon-pulse 2s infinite
+
+.neon-flicker
+  animation: neon-flicker 3s infinite
+
+.cyber-rotate
+  animation: cyber-rotate 4s linear infinite
+
+.cyber-float
+  animation: cyber-float 3s ease-in-out infinite
+
+.terminal-blink
+  animation: terminal-blink 1s step-end infinite
+
+.data-stream
+  position: relative
+  overflow: hidden
+
+  &::after
+    content: ''
+    position: absolute
+    top: 0
+    left: -100%
+    width: 50%
+    height: 100%
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.4), transparent)
+    animation: data-stream 2s linear infinite
