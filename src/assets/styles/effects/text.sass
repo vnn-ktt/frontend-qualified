@@ -1,0 +1,78 @@
+// Киберпанк шрифты (используйте системные моноширинные)
+.cyber-text
+  font-family: 'Courier New', 'Monaco', 'Menlo', monospace
+  font-weight: 700
+
+.terminal-text
+  font-family: 'Courier New', monospace
+  font-weight: 400
+  line-height: 1.4
+
+// Эффекты текста
+.text-gradient
+  background: linear-gradient(45deg, var(--q-primary), var(--q-secondary))
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+  background-clip: text
+
+.text-cyber-cyan
+  color: var(--q-primary)
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.5)
+
+.text-cyber-blue
+  color: var(--q-secondary)
+  text-shadow: 0 0 10px rgba(0, 102, 255, 0.5)
+
+.text-cyber-purple
+  color: var(--q-accent)
+  text-shadow: 0 0 10px rgba(138, 43, 226, 0.5)
+
+// Эффект матрицы для текста
+.matrix-text
+  background: linear-gradient(180deg, #00D4FF 0%, #0066FF 50%, #8A2BE2 100%)
+  -webkit-background-clip: text
+  -webkit-text-fill-color: transparent
+  background-clip: text
+  position: relative
+
+  &::after
+    content: attr(data-text)
+    position: absolute
+    top: 2px
+    left: 2px
+    background: linear-gradient(180deg, transparent 0%, rgba(0, 212, 255, 0.3) 100%)
+    -webkit-background-clip: text
+    -webkit-text-fill-color: transparent
+    background-clip: text
+    z-index: -1
+
+// Эффект глитча
+.glitch-text
+  position: relative
+  display: inline-block
+
+  &::before, &::after
+    content: attr(data-text)
+    position: absolute
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    clip: rect(0, 900px, 0, 0)
+
+  &::before
+    left: 2px
+    text-shadow: -1px 0 var(--q-negative)
+    animation: glitch-1 3s infinite linear alternate-reverse
+
+  &::after
+    left: -2px
+    text-shadow: 1px 0 var(--q-positive)
+    animation: glitch-2 2s infinite linear alternate-reverse
+
+@keyframes glitch-1
+  0%
+    clip: rect(20px, 900px, 25px, 0)
+  5%
+    clip: rect(15px, 900px, 30px, 0)
+// ... и так далее

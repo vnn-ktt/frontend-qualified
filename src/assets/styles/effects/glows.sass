@@ -1,0 +1,52 @@
+// Базовые классы свечения
+.glow-primary
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5), 0 0 20px rgba(0, 212, 255, 0.3)
+
+.glow-secondary
+  box-shadow: 0 0 10px rgba(0, 102, 255, 0.5), 0 0 20px rgba(0, 102, 255, 0.3)
+
+.glow-accent
+  box-shadow: 0 0 10px rgba(138, 43, 226, 0.5), 0 0 20px rgba(138, 43, 226, 0.3)
+
+.glow-positive
+  box-shadow: 0 0 10px rgba(0, 255, 136, 0.5), 0 0 20px rgba(0, 255, 136, 0.3)
+
+// Интенсивное свечение
+.glow-intense
+  box-shadow: 0 0 15px currentColor, 0 0 30px currentColor, 0 0 45px currentColor
+
+// Текстовое свечение
+.text-glow
+  text-shadow: 0 0 10px currentColor, 0 0 20px currentColor
+
+.text-glow-primary
+  text-shadow: 0 0 10px var(--q-primary), 0 0 20px var(--q-primary)
+
+.text-glow-cyan
+  text-shadow: 0 0 10px #00D4FF, 0 0 20px #00D4FF
+
+.text-glow-blue
+  text-shadow: 0 0 10px #0066FF, 0 0 20px #0066FF
+
+// Свечение при наведении
+.hover-glow
+  transition: all 0.3s ease
+
+  &:hover
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.6)
+    transform: translateY(-2px)
+
+// Свечение границ
+.border-glow
+  border: 1px solid transparent
+  background: linear-gradient(var(--cyber-bg-card), var(--cyber-bg-card)) padding-box, linear-gradient(45deg, var(--q-primary), var(--q-secondary)) border-box
+
+// Анимированное свечение
+.pulse-glow
+  animation: pulse-glow 2s infinite
+
+@keyframes pulse-glow
+  0%, 100%
+    box-shadow: 0 0 5px rgba(0, 212, 255, 0.5)
+  50%
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.8), 0 0 30px rgba(0, 212, 255, 0.6)

@@ -1,0 +1,70 @@
+.cyber-button
+  position: relative
+  background: transparent
+  border: 1px solid var(--cyber-border)
+  color: var(--cyber-text)
+  padding: 12px 24px
+  font-family: 'Courier New', monospace
+  font-weight: 700
+  text-transform: uppercase
+  letter-spacing: 1px
+  overflow: hidden
+  transition: all 0.3s ease
+  cursor: pointer
+
+  &::before
+    content: ''
+    position: absolute
+    top: 0
+    left: -100%
+    width: 100%
+    height: 100%
+    background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent)
+    transition: left 0.5s ease
+
+  &:hover
+    background: rgba(0, 212, 255, 0.1)
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.4)
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.8)
+
+    &::before
+      left: 100%
+
+  &:active
+    transform: translateY(1px)
+
+// Варианты кнопок
+.cyber-button-primary
+  @extend .cyber-button
+  border-color: var(--q-primary)
+  color: var(--q-primary)
+
+.cyber-button-secondary
+  @extend .cyber-button
+  border-color: var(--q-secondary)
+  color: var(--q-secondary)
+
+.cyber-button-accent
+  @extend .cyber-button
+  border-color: var(--q-accent)
+  color: var(--q-accent)
+
+// Кнопка с полным свечением
+.cyber-button-glow
+  @extend .cyber-button
+  box-shadow: 0 0 10px currentColor
+  animation: neon-pulse 2s infinite
+
+// Кнопка с сканирующим эффектом
+.cyber-button-scan
+  @extend .cyber-button
+
+  &::after
+    content: ''
+    position: absolute
+    top: 0
+    left: -100%
+    width: 100%
+    height: 2px
+    background: linear-gradient(90deg, transparent, currentColor, transparent)
+    animation: scan-line 2s linear infinite

@@ -9,14 +9,12 @@ export default defineConfig({
     vue({
       template: { transformAssetUrls }
     }),
-    quasar({
-    }),
+    quasar({}),
     vueDevTools(),
   ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
-      '@/styles': fileURLToPath(new URL('./src/assets/styles', import.meta.url)),
+      '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
   server: {
