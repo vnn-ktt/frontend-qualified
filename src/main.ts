@@ -3,12 +3,11 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/routes'
-
-import { Quasar } from 'quasar' //Rus localization
-import quasarLang from 'quasar/lang/ru'
+import '@/assets/styles/app.sass'
+import { Quasar } from 'quasar'
+import quasarLang from 'quasar/lang/ru' //Rus localization
 import 'quasar/src/css/index.sass' // Styles Quasar
 import '@quasar/extras/material-icons/material-icons.css' // Material Quasar icons
-import '@/assets/styles/app.sass'
 
 const app = createApp(App)
 
