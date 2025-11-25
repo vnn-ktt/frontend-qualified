@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 type TStarSize = 1 | 2 | 3
 interface Star {
@@ -101,6 +101,9 @@ interface Constellation {
 }
 
 const stars = ref<Star[]>([])
+const meteors = ref<Meteor[]>([])
+const constellations = ref<Constellation[]>([])
+
 const generateStars = (count: number) => {
   const starArr: Star[] = []
   for (let i = 0; i < count; i++) {
@@ -115,26 +118,22 @@ const generateStars = (count: number) => {
   }
   return starArr
 }
-const meteors = ref<Meteor[]>([
-  { id: 1, startX: -10, startY: 15, speed: 3, delay: 0 },
-  { id: 2, startX: 120, startY: 25, speed: 4, delay: 8 },
-  { id: 3, startX: -5, startY: 40, speed: 2.5, delay: 15 },
-  { id: 4, startX: 110, startY: 60, speed: 3.5, delay: 22 }
-])
+
 const generateMeteors = (count: number) => {
   const meteorArr: Meteor[] = []
   for (let i = 0; i < count; i++) {
     meteorArr.push({
       id: i,
-      startX: Math.random() * 10,
-      startY: Math.random() * 10,
-      speed: Math.random() * 10,
-      delay: Math.random() * 5
+      startX: 100 + Math.random() * 20, // Начинать за пределами экрана справа
+      startY: Math.random() * 50, // Только верхняя половина экрана
+      speed: 3 + Math.random() * 4, // Более реалистичная скорость
+      delay: Math.random() * 30 // Большая задержка для редких появлений
     })
   }
   return meteorArr
 }
-const constellations = ref<Constellation[]>([
+
+const createConstellations = () => [
   {
     id: 1,
     stars: [
@@ -166,10 +165,13 @@ const constellations = ref<Constellation[]>([
       { id: 4, x1: 75, y1: 30, x2: 70, y2: 25 }
     ]
   }
-])
+]
 
-stars.value = generateStars(100)
-meteors.value = generateMeteors(10)
+onMounted(() => {
+  stars.value = generateStars(100)
+  meteors.value = generateMeteors(5)
+  constellations.value = createConstellations()
+})
 </script>
 
 <style lang="sass" scoped>
@@ -188,7 +190,6 @@ meteors.value = generateMeteors(10)
   position: absolute
   width: 100%
   height: 100%
-
 
 .star
   position: absolute
@@ -211,52 +212,21 @@ meteors.value = generateMeteors(10)
     height: 3px
     box-shadow: 0 0 4px white, 0 0 8px rgba(255, 255, 255, 0.6)
 
-
-.shooting-stars
+.meteors
   position: absolute
   width: 100%
   height: 100%
+
 .shooting-star
   position: absolute
-  width: 2px
+  width: 100px // Увеличиваем длину хвоста
   height: 2px
-  background: white
-  border-radius: 50%
-  box-shadow: 0 0 10px white, 0 0 20px white
+  background: linear-gradient(90deg, transparent, white, transparent)
+  border-radius: 0
+  box-shadow: 0 0 10px white, 0 0 20px rgba(255, 255, 255, 0.5)
   opacity: 0
-
-
-.galaxies
-  position: absolute
-  width: 100%
-  height: 100%
-
-.galaxy
-  position: absolute
-  border-radius: 50%
-  transform: translate(-50%, -50%)
-  opacity: 0.1
-
-  &.spiral
-    background: radial-gradient(circle, transparent 40%, rgba(255, 255, 255, 0.05) 70%)
-    box-shadow: 0 0 100px rgba(255, 255, 255, 0.05)
-
-  &.elliptical
-    background: radial-gradient(ellipse, rgba(255, 255, 255, 0.03) 0%, transparent 70%)
-
-
-.nebulae
-  position: absolute
-  width: 100%
-  height: 100%
-
-.nebula
-  position: absolute
-  border-radius: 50%
-  filter: blur(20px)
-  opacity: 0.3
-  transform: translate(-50%, -50%)
-
+  transform-origin: left center
+  transform: rotate(-45deg) // Изменяем угол на более естественный
 
 .constellations
   position: absolute
@@ -278,7 +248,6 @@ meteors.value = generateMeteors(10)
   transform: translate(-50%, -50%)
   animation: constellation-pulse 4s ease-in-out infinite
 
-
 .constellation-lines
   position: absolute
   top: 0
@@ -288,7 +257,6 @@ meteors.value = generateMeteors(10)
   stroke: rgba(0, 212, 255, 0.2)
   stroke-width: 1
   stroke-dasharray: 3, 3
-
 
 @keyframes twinkle
   0%, 100%
@@ -300,33 +268,15 @@ meteors.value = generateMeteors(10)
 
 @keyframes shoot
   0%
-    transform: translateX(0) translateY(0) rotate(45deg)
+    transform: rotate(-45deg) translateX(0) translateY(0)
     opacity: 0
   10%
     opacity: 1
   20%
     opacity: 0.8
   100%
-    transform: translateX(100vw) translateY(100vh) rotate(45deg)
+    transform: rotate(-45deg) translateX(-100vw) translateY(100vh)
     opacity: 0
-
-@keyframes galaxy-rotate
-  0%
-    transform: translate(-50%, -50%) rotate(0deg)
-  100%
-    transform: translate(-50%, -50%) rotate(360deg)
-
-@keyframes nebula-drift
-  0%
-    transform: translate(-50%, -50%) scale(1)
-  100%
-    transform: translate(calc(-50% + 20px), calc(-50% + 10px)) scale(1.1)
-
-@keyframes planet-float
-  0%, 100%
-    transform: translate(-50%, -50%) translateY(0px)
-  50%
-    transform: translate(-50%, -50%) translateY(-10px)
 
 @keyframes constellation-pulse
   0%, 100%
