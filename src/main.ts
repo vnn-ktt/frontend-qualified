@@ -16,8 +16,5 @@ app.use(createRouter({
     history: createWebHistory(),
     routes,
 }))
-app.use(
-    Quasar,
-    { plugins: {}, lang: quasarLang,} as any
-)
+app.use(Quasar, { plugins: {}, lang: quasarLang,} as any)
 app.mount('#app')

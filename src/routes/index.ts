@@ -1,7 +1,7 @@
-import HomeView from '@/views/HomeView.vue'
-import QuizView from '@/views/QuizView.vue'
+import HomePage from '@/pages/HomePage.vue'
+import QuizPage from '@/pages/QuizPage.vue'
 
 export const routes = [
-    {path: '/', name: 'home', component: HomeView},
-    {path: '/quiz', name: 'quiz', component: QuizView}
+    {path: '/', name: 'home', component: HomePage},
+    {path: '/quiz', name: 'quiz', component: QuizPage}
 ];

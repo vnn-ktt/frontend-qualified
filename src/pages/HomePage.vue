@@ -1,7 +1,6 @@
 <template>
   <q-page class="home-page">
 
-    <!-- Анимированный фон -->
     <Background />
 
     <!-- Main Content -->
@@ -79,7 +78,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
-import Background from '@/components/Background.vue'
+import Background from '@/components/animated/Background.vue'
 
 const router = useRouter()
 

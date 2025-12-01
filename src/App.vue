@@ -1,10 +1,17 @@
 <script setup lang="ts">
-import HomeView from '@/views/HomeView.vue'
-import HomeLayout from "@/layouts/HomeLayout.vue";
+import HomePage from '@/pages/HomePage.vue'
+import MainLayout from "@/layouts/MainLayout.vue"
+import { useThemeStore } from '@/stores/guiStore'
+import { onMounted } from 'vue'
+
+const themeStore = useThemeStore()
+onMounted(() => {
+  themeStore.initTheme()
+})
 </script>
 
 <template>
-  <home-layout>
-    <home-view />
-  </home-layout>
+  <MainLayout>
+    <HomePage />
+  </MainLayout>
 </template>
