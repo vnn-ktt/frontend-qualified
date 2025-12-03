@@ -25,56 +25,18 @@ const goSettings = () => router.push('/settings')
       <div class="cyber-header">
         <div class="scan-line"></div>
         <div class="left-side">
-          <q-btn
-              flat
-              dense
-              icon="menu"
-              size="sm"
-              class="menu-btn"
-              @click="leftDrawerOpen = !leftDrawerOpen"
-          />
-          <div class="brand">
+          <q-btn padding="0" class="brand" @click="goHome">
             <IconShuttle />
             <span class="brand-title">QUALIFIED</span>
-          </div>
+          </q-btn>
         </div>
         <div class="right-side">
-          <q-btn flat size="sm" class="nav-btn" @click="goHome">Home</q-btn>
           <q-btn flat size="sm" class="nav-btn" @click="goAbout">Docs</q-btn>
           <q-btn flat size="sm" class="nav-btn" @click="goSettings">About</q-btn>
-
-          <!-- Переключатель темы -->
-          <q-toggle
-              :model-value="isDarkTheme"
-              dense
-              class="q-toggle--dark"
-              @update:model-value="toggleTheme"
-          />
+          <q-toggle :model-value="isDarkTheme" dense class="q-toggle--dark" @update:model-value="toggleTheme"/>
         </div>
       </div>
     </q-header>
-    <q-drawer
-        v-model="leftDrawerOpen"
-        side="left"
-        overlay
-        behavior="mobile"
-        :class="isDarkTheme ? 'bg-dark text-white' : 'bg-white text-dark'"
-    >
-      <q-list>
-        <q-item clickable v-ripple @click="goHome">
-          <q-item-section avatar><q-icon name="home" /></q-item-section>
-          <q-item-section>Home</q-item-section>
-        </q-item>
-        <q-item clickable v-ripple @click="goAbout">
-          <q-item-section avatar><q-icon name="info" /></q-item-section>
-          <q-item-section>About</q-item-section>
-        </q-item>
-        <q-item clickable v-ripple @click="goSettings">
-          <q-item-section avatar><q-icon name="settings" /></q-item-section>
-          <q-item-section>Settings</q-item-section>
-        </q-item>
-      </q-list>
-    </q-drawer>
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -138,7 +100,6 @@ const goSettings = () => router.push('/settings')
 .right-side
   display: flex
   align-items: center
-  gap: 20px
 
 .nav-btn
   text-transform: uppercase
