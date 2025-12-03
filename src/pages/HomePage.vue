@@ -1,80 +1,3 @@
-<template>
-  <q-page class="home-page">
-
-    <Background />
-
-    <!-- Main Content -->
-<!--    <div class="content-wrapper column items-center justify-center text-center">-->
-
-<!--      &lt;!&ndash; Animated Title &ndash;&gt;-->
-<!--      <div class="title-container">-->
-<!--        <h1 class="main-title glitch-text" data-text="QuizBot">QuizBot</h1>-->
-<!--        <div class="title-subtext neon-pulse">NEURAL NETWORK ACTIVATED</div>-->
-<!--      </div>-->
-
-<!--      &lt;!&ndash; Subtitle with terminal effect &ndash;&gt;-->
-<!--      <div class="subtitle-container">-->
-<!--        <p class="subtitle terminal-type typing">-->
-<!--          Test your skills in JavaScript & Python!-->
-<!--        </p>-->
-<!--      </div>-->
-
-<!--      &lt;!&ndash; Stats Cards &ndash;&gt;-->
-<!--      <div class="stats-container row wrap justify-center q-mb-xl">-->
-<!--        <q-card class="stats-card cyber-float" style="animation-delay: 0s">-->
-<!--          <q-card-section class="text-center">-->
-<!--            <div class="stat-number text-glow-cyan">100+</div>-->
-<!--            <div class="stat-label">Questions</div>-->
-<!--          </q-card-section>-->
-<!--        </q-card>-->
-
-<!--        <q-card class="stats-card cyber-float" style="animation-delay: 0.2s">-->
-<!--          <q-card-section class="text-center">-->
-<!--            <div class="stat-number text-glow-blue">2</div>-->
-<!--            <div class="stat-label">Languages</div>-->
-<!--          </q-card-section>-->
-<!--        </q-card>-->
-
-<!--        <q-card class="stats-card cyber-float" style="animation-delay: 0.4s">-->
-<!--          <q-card-section class="text-center">-->
-<!--            <div class="stat-number text-glow-purple">∞</div>-->
-<!--            <div class="stat-label">Challenges</div>-->
-<!--          </q-card-section>-->
-<!--        </q-card>-->
-<!--      </div>-->
-
-<!--      &lt;!&ndash; CTA Section &ndash;&gt;-->
-<!--      <div class="cta-section">-->
-<!--        <q-btn-->
-<!--            label="Initialize Quiz Sequence"-->
-<!--            size="lg"-->
-<!--            color="primary"-->
-<!--            icon="play_arrow"-->
-<!--            class="cta-btn scan-btn neon-pulse"-->
-<!--            @click="startQuiz"-->
-<!--        />-->
-
-<!--        <div class="cta-subtext">-->
-<!--          <span class="terminal-blink">></span> Press to begin neural assessment-->
-<!--        </div>-->
-<!--      </div>-->
-
-<!--      &lt;!&ndash; Tech Cards &ndash;&gt;-->
-<!--      <div class="tech-cards row wrap justify-center q-mt-xl">-->
-<!--        <q-card class="tech-card" v-for="tech in technologies" :key="tech.name">-->
-<!--          <q-card-section class="text-center">-->
-<!--            <div class="tech-icon" :class="tech.iconClass">{{ tech.icon }}</div>-->
-<!--            <div class="tech-name">{{ tech.name }}</div>-->
-<!--            <div class="tech-status" :class="tech.statusClass">{{ tech.status }}</div>-->
-<!--          </q-card-section>-->
-<!--        </q-card>-->
-<!--      </div>-->
-
-<!--    </div>-->
-
-  </q-page>
-</template>
-
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
@@ -123,7 +46,82 @@ const startQuiz = () => {
   }, 800)
 }
 </script>
+<template>
+  <q-page class="home-page">
 
+    <Background />
+
+    <!-- Main Content -->
+    <!--    <div class="content-wrapper column items-center justify-center text-center">-->
+
+    <!--      &lt;!&ndash; Animated Title &ndash;&gt;-->
+    <!--      <div class="title-container">-->
+    <!--        <h1 class="main-title glitch-text" data-text="QuizBot">QuizBot</h1>-->
+    <!--        <div class="title-subtext neon-pulse">NEURAL NETWORK ACTIVATED</div>-->
+    <!--      </div>-->
+
+    <!--      &lt;!&ndash; Subtitle with terminal effect &ndash;&gt;-->
+    <!--      <div class="subtitle-container">-->
+    <!--        <p class="subtitle terminal-type typing">-->
+    <!--          Test your skills in JavaScript & Python!-->
+    <!--        </p>-->
+    <!--      </div>-->
+
+    <!--      &lt;!&ndash; Stats Cards &ndash;&gt;-->
+    <!--      <div class="stats-container row wrap justify-center q-mb-xl">-->
+    <!--        <q-card class="stats-card cyber-float" style="animation-delay: 0s">-->
+    <!--          <q-card-section class="text-center">-->
+    <!--            <div class="stat-number text-glow-cyan">100+</div>-->
+    <!--            <div class="stat-label">Questions</div>-->
+    <!--          </q-card-section>-->
+    <!--        </q-card>-->
+
+    <!--        <q-card class="stats-card cyber-float" style="animation-delay: 0.2s">-->
+    <!--          <q-card-section class="text-center">-->
+    <!--            <div class="stat-number text-glow-blue">2</div>-->
+    <!--            <div class="stat-label">Languages</div>-->
+    <!--          </q-card-section>-->
+    <!--        </q-card>-->
+
+    <!--        <q-card class="stats-card cyber-float" style="animation-delay: 0.4s">-->
+    <!--          <q-card-section class="text-center">-->
+    <!--            <div class="stat-number text-glow-purple">∞</div>-->
+    <!--            <div class="stat-label">Challenges</div>-->
+    <!--          </q-card-section>-->
+    <!--        </q-card>-->
+    <!--      </div>-->
+
+    <!--      &lt;!&ndash; CTA Section &ndash;&gt;-->
+    <!--      <div class="cta-section">-->
+    <!--        <q-btn-->
+    <!--            label="Initialize Quiz Sequence"-->
+    <!--            size="lg"-->
+    <!--            color="primary"-->
+    <!--            icon="play_arrow"-->
+    <!--            class="cta-btn scan-btn neon-pulse"-->
+    <!--            @click="startQuiz"-->
+    <!--        />-->
+
+    <!--        <div class="cta-subtext">-->
+    <!--          <span class="terminal-blink">></span> Press to begin neural assessment-->
+    <!--        </div>-->
+    <!--      </div>-->
+
+    <!--      &lt;!&ndash; Tech Cards &ndash;&gt;-->
+    <!--      <div class="tech-cards row wrap justify-center q-mt-xl">-->
+    <!--        <q-card class="tech-card" v-for="tech in technologies" :key="tech.name">-->
+    <!--          <q-card-section class="text-center">-->
+    <!--            <div class="tech-icon" :class="tech.iconClass">{{ tech.icon }}</div>-->
+    <!--            <div class="tech-name">{{ tech.name }}</div>-->
+    <!--            <div class="tech-status" :class="tech.statusClass">{{ tech.status }}</div>-->
+    <!--          </q-card-section>-->
+    <!--        </q-card>-->
+    <!--      </div>-->
+
+    <!--    </div>-->
+
+  </q-page>
+</template>
 <style lang="sass" scoped>
 .home-page
   width: 100%
