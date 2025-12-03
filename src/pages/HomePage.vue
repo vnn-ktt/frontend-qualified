@@ -11,23 +11,23 @@ const technologies = ref([
     name: 'JavaScript',
     icon: '{}',
     iconClass: 'js-glow',
-    status: 'ONLINE',
+    status: 'ACTIVE',
     statusClass: 'status-online',
     description: 'ES2023',
     level: 95
   },
   {
-    name: 'Python',
-    icon: '🐍',
+    name: 'TypeScript',
+    icon: '👩‍💻',
     iconClass: 'python-glow',
-    status: 'ONLINE',
+    status: 'ACTIVE',
     statusClass: 'status-online',
     description: 'AI/ML Ready',
     level: 88
   },
   {
     name: 'Vue.js',
-    icon: '⚡',
+    icon: '🌲',
     iconClass: 'vue-glow',
     status: 'ACTIVE',
     statusClass: 'status-active',
@@ -35,10 +35,10 @@ const technologies = ref([
     level: 92
   },
   {
-    name: 'Quasar',
-    icon: '🎯',
+    name: 'Nest.js',
+    icon: '🦁',
     iconClass: 'quasar-glow',
-    status: 'READY',
+    status: 'ACTIVE',
     statusClass: 'status-ready',
     description: 'Cross-platform',
     level: 90

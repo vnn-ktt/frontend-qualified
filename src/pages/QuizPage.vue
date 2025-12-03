@@ -1,11 +1,14 @@
+<script setup lang="ts">
+import Chat from '@/components/chat/Chat.vue'
+</script>
 <template>
-  <q-page class="flex flex-center bg-grey-2">
-    <div class="text-h5 text-primary">Quiz Page (coming soon)</div>
+  <q-page class="quiz-page">
+    <Chat @back="$router.back()" />
   </q-page>
 </template>
-<script setup lang="ts">
-
-</script>
-<style scoped>
-
+<style lang="scss" scoped>
+.quiz-page {
+  height: 100vh;
+  overflow: hidden;
+}
 </style>
