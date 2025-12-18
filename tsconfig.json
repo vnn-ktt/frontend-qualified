@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "types": ["vue"], //импортирование типов
+    "target": "ES2020",
+    "module": "ESNext", // использование import
+    "moduleResolution": "node", // node.js ищет модули в node_modules и поддерживает расширения .ts
+    "esModuleInterop": true, // позволяет импортировать CommonJS модули как ES модули
+    "allowSyntheticDefaultImports": true, //когда включен esModuleInterop
+    "lib": ["ES2020"], // только стандартные ES2020 функции, без DOM
+    "rootDir": "./src",
+    "strict": true, // noImplicitAny, strictNullChecks, strictFunctionTypes
+    "forceConsistentCasingInFileNames": true, // для кроссплатформенной совместимости (Windows vs Linux)
+    "resolveJsonModule": true, // позволяет импортировать JSON файлы как модули
+    "declaration": true, // генерирует .d.ts файлы (для библиотек)
+    "skipLibCheck": true, // пропускает проверку типов в файлах .d.ts (декларациях)
+    "paths": {
+        "@/*": ["./src/*"]
+    } // массив aliases
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "public"]
+}
