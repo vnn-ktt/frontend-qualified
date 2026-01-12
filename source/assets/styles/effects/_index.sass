@@ -1,20 +1,17 @@
-// Импорт всех файлов с эффектами
-@import 'animations'
-@import 'glows'
-@import 'scans'
-@import 'transitions'
-@import 'text'
-@import 'buttons'
-@import 'inputs'
+@use 'animations'
+@use 'glows'
+@use 'scans'
+@use 'transitions'
+@use 'text'
+@use 'buttons'
+@use 'inputs'
 
-// Глобальные киберпанк переменные
 :root
   --cyber-glow: #00D4FF
   --cyber-border: #0066FF
   --cyber-bg-card: #001233
   --cyber-text: #E0F7FF
 
-// Общие стили для киберпанк элементов
 .cyber-panel
   background: var(--cyber-bg-card)
   border: 1px solid var(--cyber-border)

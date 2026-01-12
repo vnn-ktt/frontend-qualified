@@ -1,5 +1,5 @@
 import HomePage from '@/pages/HomePage.vue'
-import GamePage from '@/pages/GamePage.vue'
+import LandingPage from '@/pages/LandingPage.vue'
 
 export const routes = [
     {
@@ -8,8 +8,8 @@ export const routes = [
         component: HomePage
     },
     {
-        path: '/quiz', 
-        name: 'quiz', 
-        component: GamePage
-    }
+        path: '/landing', 
+        name: 'landing', 
+        component: LandingPage
+    },
 ];

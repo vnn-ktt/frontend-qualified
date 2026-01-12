@@ -1,22 +1,26 @@
 {
   "compilerOptions": {
-    "types": ["vue"], //импортирование типов
+    "types": ["element-plus/global"], //импортирование типов
     "target": "ES2020",
     "module": "ESNext", // использование import
     "moduleResolution": "node", // node.js ищет модули в node_modules и поддерживает расширения .ts
     "esModuleInterop": true, // позволяет импортировать CommonJS модули как ES модули
     "allowSyntheticDefaultImports": true, //когда включен esModuleInterop
-    "lib": ["ES2020"], // только стандартные ES2020 функции, без DOM
-    "rootDir": "./src",
+    "lib": [
+      "ES2020", // только стандартные ES2020 функции
+      "DOM",
+      "DOM.Iterable"  // для использования DOM
+    ],
+    "rootDir": "source",
     "strict": true, // noImplicitAny, strictNullChecks, strictFunctionTypes
     "forceConsistentCasingInFileNames": true, // для кроссплатформенной совместимости (Windows vs Linux)
     "resolveJsonModule": true, // позволяет импортировать JSON файлы как модули
     "declaration": true, // генерирует .d.ts файлы (для библиотек)
     "skipLibCheck": true, // пропускает проверку типов в файлах .d.ts (декларациях)
     "paths": {
-        "@/*": ["./src/*"]
+        "@/*": ["./source/*"]
     } // массив aliases
   },
-  "include": ["src/**/*"],
+  "include": ["source/**/*"],
   "exclude": ["node_modules", "public"]
 }
