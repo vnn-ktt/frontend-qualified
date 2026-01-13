@@ -4,7 +4,7 @@ import LandingPage from '@/pages/LandingPage.vue'
 export const routes = [
     {
         path: '/', 
-        name: 'home', 
+        name: 'main', 
         component: HomePage
     },
     {
@@ -12,4 +12,8 @@ export const routes = [
         name: 'landing', 
         component: LandingPage
     },
+    {
+        path: '/:pathMatch(.*)*',
+        redirect: '/landing'
+    }
 ];

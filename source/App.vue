@@ -5,11 +5,18 @@ import { useDark, useToggle } from '@vueuse/core'
 import type { TTheme } from '@/types/theme'
 import { ElConfigProvider } from 'element-plus'
 import MobileLayout from '@/layouts/MobileLayout.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 //Element-UI config
 const size = ref<'default' | 'small' | 'large'>('default')
 const zIndex = ref(3000)
 const namespace = ref('el')
+
+//Route
+const route = useRoute()
+const router = useRouter()
+const isAuthed = "no"
+const isLandingPage = computed(() => route.path === '/landing')
 
 //Theming
 const defaultGuiSettings = {
@@ -29,6 +36,15 @@ const isDarkTheme = useDark({
 })
 
 const toggleTheme = useToggle(isDarkTheme)
+
+watch([isAuthed, () => route.path], ([auth, path]) => {
+  if (!auth && path !== '/landing') {
+    console.log('user is not authed')
+    router.push('/landing')
+  } else if (auth && path === '/landing') {
+    router.push('/')
+  }
+}, { immediate: true })
 
 watch(isDarkTheme, (dark) => {
   const theme: TTheme = dark ? 'theme--dark' : 'theme--light'
@@ -51,12 +67,18 @@ provide('app-theme', {
 <template>
   <div id="app">
     <ElConfigProvider :size="size" :z-index="zIndex" :namespace="namespace">
-      <MobileLayout 
-        :is-dark-theme="isDarkTheme" 
-        @toggle-theme="toggleTheme"
-      >
+      <template v-if="isLandingPage">
         <RouterView />
-      </MobileLayout>
+      </template>
+      
+      <template v-else>
+        <MobileLayout 
+          :is-dark-theme="isDarkTheme" 
+          @toggle-theme="toggleTheme"
+        >
+          <RouterView />
+        </MobileLayout>
+      </template>
     </ElConfigProvider>
   </div>
 </template>
