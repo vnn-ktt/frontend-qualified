@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, nextTick, watch } from 'vue'
-import { useQuasar } from 'quasar'
 import { v4 as uuidv4 } from 'uuid'
 import ChatMessage from '@/components/chat/Message.vue'
 import TypingIndicator from '@/components/chat/TypeIndicator.vue'
 import QuickActions from '@/components/chat/QuickAction.vue'
 import { IChatMessage, IQuickAction } from '@/types/chat'
-
-const $q = useQuasar()
 
 const messages = ref<IChatMessage[]>([
   {

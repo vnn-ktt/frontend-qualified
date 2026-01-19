@@ -1,0 +1,269 @@
+// =============================================================================
+// BREAKPOINTS & MEDIA SYSTEM (Telegram Mini App / Web / Desktop)
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// BASE BREAKPOINTS
+// -----------------------------------------------------------------------------
+
+$breakpoints: (
+  'xs': 320px,
+  'sm': 375px,
+  'md': 414px,
+  'lg': 428px,
+  'xl': 768px,
+  'xxl': 1024px,
+  'xxxl': 1440px,
+  'full': 1920px
+) !default
+
+$telegram-breakpoints: (
+  'telegram-mobile': 320px,
+  'telegram-tablet': 768px,
+  'telegram-desktop': 1024px,
+  'telegram-web': 1280px
+) !default
+
+$all-breakpoints: map-merge($breakpoints, $telegram-breakpoints)
+
+// -----------------------------------------------------------------------------
+// TELEGRAM CONSTANTS
+// -----------------------------------------------------------------------------
+
+$telegram-bottom-bar: 56px
+$telegram-top-bar: 44px
+
+// -----------------------------------------------------------------------------
+// BREAKPOINT FUNCTION
+// -----------------------------------------------------------------------------
+
+@function bp($key)
+  @if map-has-key($all-breakpoints, $key)
+    @return map-get($all-breakpoints, $key)
+
+  @error "Breakpoint `#{$key}` not found"
+
+// -----------------------------------------------------------------------------
+// UNIVERSAL MEDIA MIXIN
+// -----------------------------------------------------------------------------
+// Usage:
+// @include media(md)
+// @include media(md, down)
+// @include media(sm, lg)
+// -----------------------------------------------------------------------------
+
+@mixin media($from, $to: null)
+  @if $to == down
+    @media (max-width: bp($from) - 1px)
+      @content
+
+  @else if $to == null
+    @media (min-width: bp($from))
+      @content
+
+  @else
+    @media (min-width: bp($from)) and (max-width: bp($to) - 1px)
+      @content
+
+// -----------------------------------------------------------------------------
+// DEVICE SHORTCUTS
+// -----------------------------------------------------------------------------
+
+@mixin mobile-only
+  @include media(md, down)
+    @content
+
+@mixin tablet-only
+  @include media(md, xxl)
+    @content
+
+@mixin desktop-only
+  @include media(xxl)
+    @content
+
+// -----------------------------------------------------------------------------
+// ORIENTATION
+// -----------------------------------------------------------------------------
+
+@mixin portrait
+  @media (orientation: portrait)
+    @content
+
+@mixin landscape
+  @media (orientation: landscape)
+    @content
+
+@mixin mobile-portrait
+  @include mobile-only
+    @include portrait
+      @content
+
+@mixin mobile-landscape
+  @include mobile-only
+    @include landscape
+      @content
+
+// -----------------------------------------------------------------------------
+// SAFE AREA (iOS)
+// -----------------------------------------------------------------------------
+
+@mixin safe-area-top
+  padding-top: env(safe-area-inset-top)
+
+  @supports (padding-top: constant(safe-area-inset-top))
+    padding-top: constant(safe-area-inset-top)
+
+@mixin safe-area-bottom
+  padding-bottom: env(safe-area-inset-bottom)
+
+  @supports (padding-bottom: constant(safe-area-inset-bottom))
+    padding-bottom: constant(safe-area-inset-bottom)
+
+@mixin safe-area-left
+  padding-left: env(safe-area-inset-left)
+
+  @supports (padding-left: constant(safe-area-inset-left))
+    padding-left: constant(safe-area-inset-left)
+
+@mixin safe-area-right
+  padding-right: env(safe-area-inset-right)
+
+  @supports (padding-right: constant(safe-area-inset-right))
+    padding-right: constant(safe-area-inset-right)
+
+@mixin safe-area-all
+  @include safe-area-top
+  @include safe-area-right
+  @include safe-area-bottom
+  @include safe-area-left
+
+@mixin telegram-safe-area
+  @include media(telegram-tablet, down)
+    padding-bottom: calc(#{$telegram-bottom-bar} + env(safe-area-inset-bottom))
+
+  @include media(telegram-desktop)
+    padding: 20px
+
+// -----------------------------------------------------------------------------
+// DISPLAY DENSITY
+// -----------------------------------------------------------------------------
+
+@mixin retina
+  @media (min-resolution: 2dppx)
+    @content
+
+@mixin retina-3x
+  @media (min-resolution: 3dppx)
+    @content
+
+// -----------------------------------------------------------------------------
+// RESPONSIVE UTILITIES
+// -----------------------------------------------------------------------------
+
+@mixin responsive-font($min, $max, $min-vw: 320px, $max-vw: 1440px)
+  font-size: clamp(
+    #{$min},
+    calc(#{$min} + (#{$max} - #{$min}) * ((100vw - #{$min-vw}) / (#{$max-vw} - #{$min-vw}))),
+    #{$max}
+  )
+
+@mixin responsive-padding($min, $max, $min-vw: 320px, $max-vw: 1440px)
+  padding: clamp(
+    #{$min},
+    calc(#{$min} + (#{$max} - #{$min}) * ((100vw - #{$min-vw}) / (#{$max-vw} - #{$min-vw}))),
+    #{$max}
+  )
+
+@mixin responsive-width($min, $max, $min-vw: 320px, $max-vw: 1440px)
+  width: clamp(
+    #{$min},
+    calc(#{$min} + (#{$max} - #{$min}) * ((100vw - #{$min-vw}) / (#{$max-vw} - #{$min-vw}))),
+    #{$max}
+  )
+
+// -----------------------------------------------------------------------------
+// TELEGRAM LAYOUT HELPERS
+// -----------------------------------------------------------------------------
+
+@mixin telegram-grid($columns: 1, $gap: 16px)
+  display: grid
+  grid-template-columns: repeat($columns, 1fr)
+  gap: $gap
+
+  @include media(sm)
+    gap: calc(#{$gap} * 1.25)
+
+  @include media(md)
+    gap: calc(#{$gap} * 1.5)
+
+  @include media(lg)
+    gap: calc(#{$gap} * 1.75)
+
+@mixin telegram-container
+  width: 100%
+  margin: 0 auto
+  padding: 0 16px
+
+  @include safe-area-left
+  @include safe-area-right
+
+  @include media(sm)
+    padding: 0 20px
+
+  @include media(md)
+    padding: 0 24px
+
+  @include media(lg)
+    padding: 0 32px
+
+  @include media(xl)
+    max-width: 1200px
+    padding: 0
+
+@mixin telegram-button
+  min-height: 44px
+  min-width: 44px
+  padding: 12px 24px
+
+  @include mobile-only
+    padding: 10px 20px
+
+  @include tablet-only
+    min-height: 48px
+    min-width: 48px
+
+// -----------------------------------------------------------------------------
+// SHORTCUT MIXINS
+// -----------------------------------------------------------------------------
+
+@mixin xs
+  @include media(xs)
+    @content
+
+@mixin sm
+  @include media(sm)
+    @content
+
+@mixin md
+  @include media(md)
+    @content
+
+@mixin lg
+  @include media(lg)
+    @content
+
+@mixin xl
+  @include media(xl)
+    @content
+
+@mixin xxl
+  @include media(xxl)
+    @content
+
+@mixin tg-mobile
+  @include media(telegram-tablet, down)
+    @content
+
+@mixin tg-desktop
+  @include media(telegram-desktop)
+    @content

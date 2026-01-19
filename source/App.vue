@@ -14,8 +14,6 @@ const namespace = ref('el')
 
 //Route
 const route = useRoute()
-const router = useRouter()
-const isAuthed = "no"
 const isLandingPage = computed(() => route.path === '/landing')
 
 //Theming
@@ -36,15 +34,6 @@ const isDarkTheme = useDark({
 })
 
 const toggleTheme = useToggle(isDarkTheme)
-
-watch([isAuthed, () => route.path], ([auth, path]) => {
-  if (!auth && path !== '/landing') {
-    console.log('user is not authed')
-    router.push('/landing')
-  } else if (auth && path === '/landing') {
-    router.push('/')
-  }
-}, { immediate: true })
 
 watch(isDarkTheme, (dark) => {
   const theme: TTheme = dark ? 'theme--dark' : 'theme--light'

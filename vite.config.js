@@ -17,6 +17,22 @@ export default defineConfig({
     }),
     vueDevTools(),
   ],
+  css: {
+    preprocessorOptions: {
+      sass: {
+        additionalData: `
+          @use "@/assets/styles/mixins/gradients.sass" as gradients;
+          @use "@/assets/styles/mixins/breakpoints.sass" as breakpoints;
+        `
+      },
+      scss: {
+        additionalData: `
+          @use "@/assets/styles/mixins/gradients.sass" as gradients;
+          @use "@/assets/styles/mixins/breakpoints.sass" as breakpoints;
+        `
+      }
+    }
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./source', import.meta.url))

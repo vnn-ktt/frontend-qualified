@@ -1,4 +1,9 @@
 export interface IUser {
-    id: number,
-    name: string
+  id: string
+  name: string
+  email: string
+  avatar?: string
+  level: number
+  xp: number
+  token?: string
 }
