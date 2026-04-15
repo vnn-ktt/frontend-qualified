@@ -9,20 +9,22 @@ defineProps<{
 </script>
 
 <template>
-  <el-card class="feature-card">
+  <div class="feature-card">
     <div class="feature-icon" :style="{ color: color || 'var(--color-primary)' }">
       <component :is="icon" />
     </div>
     <h4 class="feature-title">{{ title }}</h4>
     <p class="feature-description">{{ description }}</p>
-  </el-card>
+  </div>
 </template>
 
 <style lang="sass" scoped>
 @use '@/assets/styles/components' as *
 
 .feature-card
-  @extend .cyber-card
+  background: var(--cyber-bg-card)
+  border: 1px solid var(--cyber-border)
+  border-radius: 16px
   display: flex
   flex-direction: column
   align-items: center
@@ -30,6 +32,7 @@ defineProps<{
   padding: 2rem
   transition: all 0.3s ease
   cursor: default
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1)
 
   &:hover
     transform: translateY(-8px)
@@ -45,9 +48,7 @@ defineProps<{
     align-items: center
     justify-content: center
     margin-bottom: 1.5rem
-
-    .el-icon
-      font-size: 2rem
+    font-size: 2rem
 
   .feature-title
     font-size: 1.25rem

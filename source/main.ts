@@ -3,10 +3,11 @@ import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createRouter, createWebHistory } from 'vue-router'
 import { routes } from '@/routes'
-import ElementPlus from 'element-plus'
+import PrimeVue from 'primevue/config'
+import Toast from 'primevue/toast'
+import ToastService from 'primevue/toastservice'
 import '@/assets/styles/app.sass'
-import 'element-plus/dist/index.css'
-import 'element-plus/theme-chalk/dark/css-vars.css'
+import 'primeicons/primeicons.css'
 
 const app = createApp(App)
 const router = createRouter({
@@ -26,6 +27,9 @@ router.beforeEach((to, from, next) => {
 
 app.use(createPinia())
 app.use(router)
-app.use(ElementPlus)
+app.use(PrimeVue)
+app.use(ToastService)
+app.component('Toast', Toast)
 
 app.mount('#app')
+

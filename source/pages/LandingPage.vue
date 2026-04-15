@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import {
-  Clock, SuccessFilled, Cpu, Rank, TrendCharts, ArrowRight
-} from '@element-plus/icons-vue'
 import Background from '@/components/animated/Background.vue'
 import FeatureCard from '@/components/cards/FeatureCard.vue'
 import type { Component } from 'vue'
@@ -15,11 +12,14 @@ type TFeature = {
 
 const router = useRouter()
 
+// Using placeholder icon components
+const createIconComponent = (icon: string) => ({ template: `<i class="pi ${icon}"></i>` })
+
 const features: Array<TFeature> = [
-  { icon: Cpu, title: 'AI-Powered Learning', description: 'Get personalized challenges and instant code feedback from our intelligent AI mentor' },
-  { icon: Rank, title: 'Gamified Progress', description: 'Earn badges, level up, and compete on the global leaderboard' },
-  { icon: TrendCharts, title: 'Track Growth', description: 'Detailed analytics and progress tracking to visualize your improvement' },
-  { icon: Clock, title: 'Flexible Schedule', description: 'Learn at your own pace with bite-sized lessons and challenges' }
+  { icon: createIconComponent('pi-server'), title: 'AI-Powered Learning', description: 'Get personalized challenges and instant code feedback from our intelligent AI mentor' },
+  { icon: createIconComponent('pi-chart-bar'), title: 'Gamified Progress', description: 'Earn badges, level up, and compete on the global leaderboard' },
+  { icon: createIconComponent('pi-chart-line'), title: 'Track Growth', description: 'Detailed analytics and progress tracking to visualize your improvement' },
+  { icon: createIconComponent('pi-clock'), title: 'Flexible Schedule', description: 'Learn at your own pace with bite-sized lessons and challenges' }
 ]
 </script>
 
@@ -41,10 +41,10 @@ const features: Array<TFeature> = [
           </p>
 
           <div class="hero-actions">
-            <el-button type="primary" size="large" @click="router.push('/login')" class="cta-button">
+            <button class="cta-button" @click="router.push('/login')">
               Start
-              <el-icon><ArrowRight /></el-icon>
-            </el-button>
+              <i class="pi pi-arrow-right"></i>
+            </button>
           </div>
 
           <div class="hero-stats">
@@ -143,11 +143,11 @@ const features: Array<TFeature> = [
     font-size: 1.125rem
     font-weight: 600
 
-    .el-icon
+    .pi
       margin-left: 0.5rem
       transition: transform 0.3s ease
 
-    &:hover .el-icon
+    &:hover .pi
       transform: translateX(4px)
 
 .hero-stats

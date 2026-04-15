@@ -13,16 +13,16 @@
     <div class="login-container">
       <!-- Brand header -->
       <header class="login-header">
-        <CyberButton 
-          class="back-btn" 
-          type="outline" 
+        <CyberButton
+          class="back-btn"
+          type="outline"
           @click="goHome"
           size="small"
         >
-          <el-icon><Back /></el-icon>
+          <i class="pi pi-arrow-left"></i>
           Back to Home
         </CyberButton>
-        
+
         <div class="brand">
           <h1 class="brand-title">CODE<span class="accent">FORGE</span></h1>
           <p class="brand-subtitle">Master JavaScript & TypeScript</p>
@@ -35,26 +35,26 @@
         <div class="hero-left">
           <div class="cyber-card hero-card">
             <h2 class="hero-title">Unlock Your<br><span class="accent">Coding Potential</span></h2>
-            
+
             <div class="features-list">
               <div class="feature-item">
-                <el-icon class="feature-icon"><Star /></el-icon>
+                <i class="pi pi-star feature-icon"></i>
                 <div class="feature-text">
                   <h4>Interactive Challenges</h4>
                   <p>Learn by solving real coding problems</p>
                 </div>
               </div>
-              
+
               <div class="feature-item">
-                <el-icon class="feature-icon"><Trophy /></el-icon>
+                <i class="pi pi-award feature-icon"></i>
                 <div class="feature-text">
                   <h4>Gamified Learning</h4>
                   <p>Earn XP, level up, and track progress</p>
                 </div>
               </div>
-              
+
               <div class="feature-item">
-                <el-icon class="feature-icon"><Cpu /></el-icon>
+                <i class="pi pi-server feature-icon"></i>
                 <div class="feature-text">
                   <h4>AI Mentor</h4>
                   <p>Get personalized guidance and feedback</p>
@@ -95,14 +95,14 @@
               <div class="divider">
                 <span>Or try demo account</span>
               </div>
-              
+
               <CyberButton
                 type="secondary"
                 @click="useDemoAccount"
                 size="large"
                 full-width
               >
-                <el-icon><User /></el-icon>
+                <i class="pi pi-user"></i>
                 Try Demo Account
               </CyberButton>
             </div>
@@ -113,10 +113,10 @@
       <!-- Footer -->
       <footer class="login-footer">
         <div class="footer-links">
-          <el-link type="info" :underline="false">Privacy Policy</el-link>
-          <el-link type="info" :underline="false">Terms of Service</el-link>
-          <el-link type="info" :underline="false">Contact Us</el-link>
-          <el-link type="info" :underline="false">Help Center</el-link>
+          <a href="#" class="footer-link">Privacy Policy</a>
+          <a href="#" class="footer-link">Terms of Service</a>
+          <a href="#" class="footer-link">Contact Us</a>
+          <a href="#" class="footer-link">Help Center</a>
         </div>
         <p class="copyright">© 2024 CodeForge. All code rights reserved.</p>
       </footer>
@@ -126,7 +126,7 @@
     <transition name="slide-up">
       <div v-if="showWelcome" class="welcome-notification">
         <div class="notification-content">
-          <el-icon class="notification-icon"><SuccessFilled /></el-icon>
+          <i class="pi pi-check-circle notification-icon"></i>
           <div>
             <h4>Welcome, {{ userName }}!</h4>
             <p>Redirecting to your dashboard...</p>
@@ -140,19 +140,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { ElMessage } from 'element-plus'
-import { 
-  Back, 
-  Star, 
-  Trophy, 
-  Cpu, 
-  User,
-  SuccessFilled 
-} from '@element-plus/icons-vue'
+import { useToast } from 'primevue/usetoast'
 import AuthProvider from '@/components/providers/AuthProvider.vue'
 import CyberButton from '@/components/buttons/Button.vue'
 
 const router = useRouter()
+const toast = useToast()
 const showWelcome = ref(false)
 const userName = ref('')
 
@@ -164,7 +157,7 @@ const handleAuthChange = (event: { type: string; user: any }) => {
   if (event.type === 'login' || event.type === 'register') {
     userName.value = event.user.name
     showWelcome.value = true
-    
+
     // Редирект на главную через 2 секунды
     setTimeout(() => {
       router.push('/')
@@ -181,8 +174,8 @@ const useDemoAccount = () => {
     xp: 750,
     avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=Demo'
   }
-  
-  ElMessage.success('Demo account activated!')
+
+  toast.add({ severity: 'success', summary: 'Success', detail: 'Demo account activated!', life: 3000 })
   handleAuthChange({ type: 'login', user: demoUser })
 }
 </script>
@@ -200,7 +193,7 @@ const useDemoAccount = () => {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: 
+    background-image:
       linear-gradient(rgba(0, 102, 255, 0.03) 1px, transparent 1px),
       linear-gradient(90deg, rgba(0, 102, 255, 0.03) 1px, transparent 1px);
     background-size: 50px 50px;
@@ -213,9 +206,9 @@ const useDemoAccount = () => {
     left: 0;
     width: 100%;
     height: 2px;
-    background: linear-gradient(90deg, 
-      transparent, 
-      rgba(0, 212, 255, 0.8), 
+    background: linear-gradient(90deg,
+      transparent,
+      rgba(0, 212, 255, 0.8),
       transparent
     );
     filter: blur(1px);
@@ -280,7 +273,7 @@ const useDemoAccount = () => {
   align-items: center;
 
   .back-btn {
-    .el-icon {
+    i {
       margin-right: 8px;
     }
   }
@@ -516,9 +509,10 @@ const useDemoAccount = () => {
     margin-bottom: 15px;
     flex-wrap: wrap;
 
-    .el-link {
+    .footer-link {
       color: var(--color-text-muted);
       font-size: 0.9rem;
+      text-decoration: none;
       transition: color 0.3s ease;
 
       &:hover {
@@ -597,17 +591,17 @@ const useDemoAccount = () => {
   .login-header {
     flex-direction: column;
     gap: 20px;
-    
+
     .brand {
       order: -1;
     }
   }
-  
+
   .hero-card,
   .auth-card {
     padding: 25px;
   }
-  
+
   .stats {
     flex-direction: column;
     gap: 20px;

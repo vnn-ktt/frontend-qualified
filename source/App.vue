@@ -3,14 +3,8 @@ import { ref, computed, watch, provide, onMounted } from 'vue'
 import { useStorage } from "@vueuse/core"
 import { useDark, useToggle } from '@vueuse/core'
 import type { TTheme } from '@/types/theme'
-import { ElConfigProvider } from 'element-plus'
 import MobileLayout from '@/layouts/MobileLayout.vue'
 import { useRoute, useRouter } from 'vue-router'
-
-//Element-UI config
-const size = ref<'default' | 'small' | 'large'>('default')
-const zIndex = ref(3000)
-const namespace = ref('el')
 
 //Route
 const route = useRoute()
@@ -55,19 +49,17 @@ provide('app-theme', {
 
 <template>
   <div id="app">
-    <ElConfigProvider :size="size" :z-index="zIndex" :namespace="namespace">
-      <template v-if="isLandingPage">
+    <template v-if="isLandingPage">
+      <RouterView />
+    </template>
+
+    <template v-else>
+      <MobileLayout
+        :is-dark-theme="isDarkTheme"
+        @toggle-theme="toggleTheme"
+      >
         <RouterView />
-      </template>
-      
-      <template v-else>
-        <MobileLayout 
-          :is-dark-theme="isDarkTheme" 
-          @toggle-theme="toggleTheme"
-        >
-          <RouterView />
-        </MobileLayout>
-      </template>
-    </ElConfigProvider>
+      </MobileLayout>
+    </template>
   </div>
 </template>

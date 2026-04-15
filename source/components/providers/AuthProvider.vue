@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import { ref, computed, provide } from 'vue'
 import { useStorage } from '@vueuse/core'
-import { 
-  User, 
-  UserFilled, 
-  ArrowDown, 
-  Setting, 
-  SwitchButton 
-} from '@element-plus/icons-vue'
 import AuthModal from '@/components/modals/AuthModal.vue'
 import LoginForm from '@/components/forms/LoginForm.vue'
 import RegisterForm from '@/components/forms/RegisterForm.vue'
@@ -25,6 +18,7 @@ type User = {
 
 const activeModal = ref<AuthModalType>(null)
 const user = ref<User | null>(null)
+const userMenuOpen = ref(false)
 
 // Сохраняем пользователя в localStorage
 const storedUser = useStorage<User | null>('codeforge-user', null)
@@ -76,6 +70,7 @@ const handleUserCommand = (command: string) => {
       // Навигация к настройкам
       break
   }
+  userMenuOpen.value = false
 }
 
 const logout = () => {
@@ -99,27 +94,57 @@ const emit = defineEmits<{
 <template>
   <div class="auth-provider">
     <!-- Кнопки авторизации -->
-    <div class="auth-buttons">
-      <CyberButton 
-        @click="openModal('login')"
-        type="outline"
-        glow
-        size="large"
-      >
-        <el-icon><User /></el-icon>
-        <span>Login</span>
-      </CyberButton>
-      
-      <CyberButton 
-        @click="openModal('register')"
-        type="primary"
-        glow
-        size="large"
-      >
-        <el-icon><UserFilled /></el-icon>
-        <span>Register</span>
-      </CyberButton>
-    </div>
+    <template v-if="!user">
+      <div class="auth-buttons">
+        <CyberButton
+          @click="openModal('login')"
+          type="outline"
+          glow
+          size="large"
+        >
+          <i class="pi pi-user"></i>
+          <span>Login</span>
+        </CyberButton>
+
+        <CyberButton
+          @click="openModal('register')"
+          type="primary"
+          glow
+          size="large"
+        >
+          <i class="pi pi-user"></i>
+          <span>Register</span>
+        </CyberButton>
+      </div>
+    </template>
+
+    <!-- Состояние пользователя -->
+    <template v-else>
+      <div class="user-profile">
+        <div class="user-dropdown">
+          <button class="user-dropdown-trigger" @click="userMenuOpen = !userMenuOpen">
+            <div class="user-avatar">
+              {{ user.name.charAt(0) }}
+            </div>
+            <span class="user-name">{{ user.name }}</span>
+            <i class="pi pi-chevron-down" :class="{ 'open': userMenuOpen }"></i>
+          </button>
+
+          <ul v-if="userMenuOpen" class="user-menu">
+            <li><a href="#" @click.prevent="handleUserCommand('profile')">
+              <i class="pi pi-user"></i> Profile
+            </a></li>
+            <li><a href="#" @click.prevent="handleUserCommand('settings')">
+              <i class="pi pi-cog"></i> Settings
+            </a></li>
+            <li class="divider"></li>
+            <li><a href="#" @click.prevent="handleUserCommand('logout')">
+              <i class="pi pi-power-off"></i> Logout
+            </a></li>
+          </ul>
+        </div>
+      </div>
+    </template>
 
     <!-- Модальные окна через Teleport -->
     <Teleport to="body">
@@ -128,7 +153,7 @@ const emit = defineEmits<{
         title="Login to CodeForge"
         @close="closeModal"
       >
-        <LoginForm 
+        <LoginForm
           @success="handleLoginSuccess"
           @switch-to-register="switchToRegister"
         />
@@ -139,42 +164,12 @@ const emit = defineEmits<{
         title="Join CodeForge"
         @close="closeModal"
       >
-        <RegisterForm 
+        <RegisterForm
           @success="handleRegisterSuccess"
           @switch-to-login="switchToLogin"
         />
       </AuthModal>
     </Teleport>
-
-    <!-- Состояние пользователя -->
-    <div v-if="user" class="user-profile">
-      <el-dropdown @command="handleUserCommand">
-        <div class="user-dropdown-trigger">
-          <el-avatar :size="40" :src="user.avatar" class="user-avatar">
-            {{ user.name.charAt(0) }}
-          </el-avatar>
-          <span class="user-name">{{ user.name }}</span>
-          <el-icon><ArrowDown /></el-icon>
-        </div>
-        
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item command="profile">
-              <el-icon><User /></el-icon>
-              Profile
-            </el-dropdown-item>
-            <el-dropdown-item command="settings">
-              <el-icon><Setting /></el-icon>
-              Settings
-            </el-dropdown-item>
-            <el-dropdown-item divided command="logout">
-              <el-icon><SwitchButton /></el-icon>
-              Logout
-            </el-dropdown-item>
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
-    </div>
   </div>
 </template>
 
@@ -190,6 +185,12 @@ const emit = defineEmits<{
   }
 
   .user-profile {
+    position: relative;
+
+    .user-dropdown {
+      position: relative;
+    }
+
     .user-dropdown-trigger {
       display: flex;
       align-items: center;
@@ -200,6 +201,9 @@ const emit = defineEmits<{
       border-radius: 8px;
       cursor: pointer;
       transition: all 0.3s ease;
+      color: var(--cyber-text);
+      font-size: 0.9rem;
+      border: none;
 
       &:hover {
         background: rgba(0, 102, 255, 0.1);
@@ -207,18 +211,77 @@ const emit = defineEmits<{
       }
 
       .user-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
         background: linear-gradient(45deg, var(--color-primary), var(--color-secondary));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 0.9rem;
       }
 
       .user-name {
         color: var(--cyber-text);
         font-weight: 600;
         font-size: 0.9rem;
+        min-width: 80px;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
-      .el-icon {
+      .pi-chevron-down {
         color: var(--cyber-glow);
         font-size: 0.8rem;
+        transition: transform 0.3s ease;
+
+        &.open {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    .user-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 8px;
+      background: var(--cyber-bg-card);
+      border: 1px solid var(--cyber-border);
+      border-radius: 8px;
+      min-width: 160px;
+      list-style: none;
+      padding: 8px 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+
+      li {
+        &.divider {
+          height: 1px;
+          background: var(--cyber-border);
+          margin: 4px 0;
+        }
+
+        a {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          padding: 10px 16px;
+          color: var(--cyber-glow);
+          text-decoration: none;
+          transition: all 0.3s ease;
+
+          i {
+            font-size: 0.9rem;
+          }
+
+          &:hover {
+            background: rgba(var(--cyber-glow-rgb), 0.1);
+            color: var(--color-accent);
+          }
+        }
       }
     }
   }

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Close } from '@element-plus/icons-vue'
 
 defineProps<{
   title: string
@@ -31,8 +30,8 @@ defineExpose({ shake })
   <div class="auth-modal-overlay" @click.self="close">
     <div class="auth-modal" :class="{ 'shake': showShake }">
       <!-- Закрывающая кнопка -->
-      <button class="close-btn" @click="close">
-        <el-icon><Close /></el-icon>
+      <button class="close-btn" @click="close" title="Close">
+        <i class="pi pi-times"></i>
       </button>
 
       <!-- Заголовок -->
@@ -80,7 +79,7 @@ defineExpose({ shake })
   position: relative;
   overflow: hidden;
   animation: slideUp 0.3s ease;
-  box-shadow: 
+  box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
 
@@ -103,20 +102,14 @@ defineExpose({ shake })
     cursor: pointer;
     z-index: 10;
     transition: all 0.3s ease;
+    color: var(--cyber-glow);
+    font-size: 1.2rem;
 
     &:hover {
       background: rgba(255, 0, 110, 0.1);
       border-color: var(--color-negative);
       transform: rotate(90deg);
-
-      .el-icon {
-        color: var(--color-negative);
-      }
-    }
-
-    .el-icon {
-      color: var(--cyber-glow);
-      font-size: 1.2rem;
+      color: var(--color-negative);
     }
   }
 
@@ -199,19 +192,19 @@ defineExpose({ shake })
 @media (max-width: 768px) {
   .auth-modal {
     width: 95%;
-    
+
     .modal-header {
       padding: 30px 20px 15px;
-      
+
       .modal-title {
         font-size: 1.5rem;
       }
     }
-    
+
     .modal-content {
       padding: 0 20px 20px;
     }
-    
+
     .modal-footer {
       padding: 15px 20px;
     }

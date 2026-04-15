@@ -1,92 +1,67 @@
 <template>
   <div class="mobile-layout">
-    <el-header class="header scan-horizontal">
+    <header class="header scan-horizontal">
       <div class="header-content">
         <!-- Левый блок -->
         <div class="left-side">
-          <el-button 
-            class="brand-btn" 
-            type="text" 
-            @click="goHome"
-          >
+          <button class="brand-btn" @click="goHome">
             <span class="brand-title">qualified</span>
-          </el-button>
+          </button>
         </div>
 
         <!-- Правый блок -->
         <div class="right-side">
           <!-- Дополнительное меню появляется на планшетах -->
           <div class="desktop-nav">
-            <el-button 
-              class="nav-btn" 
-              type="text" 
-              @click="goAbout"
-            >
+            <button class="nav-btn" @click="goAbout">
               Documentation
-            </el-button>
-            <el-button 
-              class="nav-btn" 
-              type="text" 
-              @click="goSettings"
-            >
+            </button>
+            <button class="nav-btn" @click="goSettings">
               About
-            </el-button>
+            </button>
           </div>
-          
-          <ThemeToggler 
-            :is-dark-theme="isDarkTheme" 
+
+          <ThemeToggler
+            :is-dark-theme="isDarkTheme"
             @toggle-theme="toggleTheme"
             class="theme-toggle"
           />
-          
+
           <!-- Мобильное меню -->
-          <el-dropdown 
-            class="mobile-menu"
-            trigger="click"
-            placement="bottom-end"
-          >
-            <el-button 
-              class="menu-btn"
-              type="text"
-              circle
-            >
-              <el-icon><More /></el-icon>
-            </el-button>
-            <template #dropdown>
-              <el-dropdown-menu>
-                <el-dropdown-item @click="goAbout">
-                  <el-icon><Document /></el-icon>
-                  Documentation
-                </el-dropdown-item>
-                <el-dropdown-item @click="goSettings">
-                  <el-icon><InfoFilled /></el-icon>
-                  About
-                </el-dropdown-item>
-                <el-dropdown-item divided @click="toggleTheme">
-                  <el-icon><MoonNight /></el-icon>
-                  Toggle Theme
-                </el-dropdown-item>
-              </el-dropdown-menu>
+          <Dropdown class="mobile-menu" :model="menuOpen" @show="menuOpen = true" @hide="menuOpen = false">
+            <template #default="{ toggleMenu }">
+              <button class="menu-btn" @click="toggleMenu">
+                <i class="pi pi-ellipsis-v"></i>
+              </button>
             </template>
-          </el-dropdown>
+            <template #content>
+              <ul class="menu-list">
+                <li><a href="#" @click.prevent="handleMenuClick(goAbout)">
+                  <i class="pi pi-file"></i> Documentation
+                </a></li>
+                <li><a href="#" @click.prevent="handleMenuClick(goSettings)">
+                  <i class="pi pi-info-circle"></i> About
+                </a></li>
+                <li class="divider"></li>
+                <li><a href="#" @click.prevent="handleMenuClick(toggleTheme)">
+                  <i class="pi pi-moon"></i> Toggle Theme
+                </a></li>
+              </ul>
+            </template>
+          </Dropdown>
         </div>
       </div>
-    </el-header>
+    </header>
 
-    <el-main class="page-container">
+    <main class="page-container">
       <slot />
-    </el-main>
+    </main>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { 
-  More, 
-  Document, 
-  InfoFilled,
-  MoonNight 
-} from '@element-plus/icons-vue'
 import ThemeToggler from '@/components/togglers/ThemeToggler.vue'
 
 defineProps<{
@@ -98,14 +73,30 @@ const emit = defineEmits<{
 }>()
 
 const router = useRouter()
+const menuOpen = ref(false)
 
 const toggleTheme = () => {
   emit('toggle-theme')
+  menuOpen.value = false
 }
 
-const goHome = () => router.push('/')
-const goAbout = () => router.push('/about')
-const goSettings = () => router.push('/settings')
+const goHome = () => {
+  router.push('/')
+  menuOpen.value = false
+}
+const goAbout = () => {
+  router.push('/about')
+  menuOpen.value = false
+}
+const goSettings = () => {
+  router.push('/settings')
+  menuOpen.value = false
+}
+
+const handleMenuClick = (callback: () => void) => {
+  callback()
+  menuOpen.value = false
+}
 </script>
 
 <style lang="sass" scoped>
@@ -160,6 +151,10 @@ const goSettings = () => router.push('/settings')
     background: rgba(var(--color-primary-rgb), 0.1)
     border: 1px solid rgba(var(--color-primary-rgb), 0.2)
     transition: all 0.3s ease
+    cursor: pointer
+    color: var(--color-text-primary)
+    font-family: inherit
+    font-size: 1rem
 
     &:hover
       background: rgba(var(--color-primary-rgb), 0.2)
@@ -207,10 +202,47 @@ const goSettings = () => router.push('/settings')
     .menu-btn
       @include breakpoints.telegram-button
       color: var(--cyber-glow)
+      background: transparent
+      border: none
+      cursor: pointer
+      padding: 6px
+      font-size: 1.2rem
 
       &:hover
         color: var(--color-text-primary)
         background: rgba(var(--cyber-glow-rgb), 0.1)
+        border-radius: 6px
+
+    :deep(.menu-list)
+      list-style: none
+      margin: 0
+      padding: 8px 0
+      background: var(--cyber-bg-card)
+      border: 1px solid var(--cyber-border)
+      border-radius: 8px
+      min-width: 160px
+
+      li
+        &.divider
+          height: 1px
+          background: var(--cyber-border)
+          margin: 4px 0
+
+        a
+          display: flex
+          align-items: center
+          gap: 8px
+          padding: 10px 16px
+          color: var(--cyber-glow)
+          text-decoration: none
+          transition: all 0.3s ease
+
+          i
+            font-size: 0.9rem
+
+          &:hover
+            background: rgba(var(--cyber-glow-rgb), 0.1)
+            color: var(--color-accent)
 
   .theme-toggle
     display: none
@@ -225,6 +257,11 @@ const goSettings = () => router.push('/settings')
   padding: 6px 12px
   border-radius: 6px
   transition: all 0.3s ease
+  background: transparent
+  border: none
+  cursor: pointer
+  color: var(--color-text-primary)
+  font-family: inherit
 
   @include breakpoints.media(md, down)
     font-size: 0.8rem

@@ -45,7 +45,7 @@ defineEmits<{
     <span class="button-content">
       <span v-if="$slots.icon || icon" class="button-icon">
         <slot name="icon">
-          <el-icon v-if="icon"><component :is="icon" /></el-icon>
+          <component v-if="icon" :is="icon" />
         </slot>
       </span>
       
@@ -219,10 +219,7 @@ defineEmits<{
   .button-icon {
     display: flex;
     align-items: center;
-    
-    .el-icon {
-      font-size: 1.1em;
-    }
+    font-size: 1.1em;
   }
 
   .button-text {
