@@ -141,8 +141,8 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useToast } from 'primevue/usetoast'
-import AuthProvider from '@/components/providers/AuthProvider.vue'
-import CyberButton from '@/components/buttons/Button.vue'
+import AuthProvider from '@/ui/providers/AuthProvider.vue'
+import CyberButton from '@/ui/buttons/Button.vue'
 
 const router = useRouter()
 const toast = useToast()

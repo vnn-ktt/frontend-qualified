@@ -2,11 +2,14 @@ import App from '@/App.vue'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 import { createRouter, createWebHistory } from 'vue-router'
-import { routes } from '@/routes'
+import { routes } from '@/router'
 import PrimeVue from 'primevue/config'
 import Toast from 'primevue/toast'
 import ToastService from 'primevue/toastservice'
+import { RouteItems } from '@/router/types'
+//@ts-ignore
 import '@/assets/styles/app.sass'
+//@ts-ignore
 import 'primeicons/primeicons.css'
 
 const app = createApp(App)
@@ -16,11 +19,11 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-    const user = localStorage.getItem('user_name')
+    const user = localStorage.getItem('auth_token')
     if (to.meta.requiresGuest && user) {
-        next('/')
+        next(RouteItems.home)
     } else if (to.meta.requiresAuth && !user) {
-        next('/login')
+        next(RouteItems.login)
     }
     next()
 })

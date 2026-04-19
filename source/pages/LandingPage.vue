@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router'
-import Background from '@/components/animated/Background.vue'
-import FeatureCard from '@/components/cards/FeatureCard.vue'
+import Background from '@/ui/animated/Background.vue'
+import FeatureCard from '@/ui/cards/FeatureCard.vue'
 import type { Component } from 'vue'
 
 type TFeature = {
@@ -12,7 +12,6 @@ type TFeature = {
 
 const router = useRouter()
 
-// Using placeholder icon components
 const createIconComponent = (icon: string) => ({ template: `<i class="pi ${icon}"></i>` })
 
 const features: Array<TFeature> = [
@@ -88,7 +87,6 @@ const features: Array<TFeature> = [
 </template>
 
 <style lang="sass" scoped>
-@use '@/assets/styles/components' as *
 
 .landing-page
   min-height: 100vh

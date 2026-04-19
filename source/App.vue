@@ -2,15 +2,14 @@
 import { ref, computed, watch, provide, onMounted } from 'vue'
 import { useStorage } from "@vueuse/core"
 import { useDark, useToggle } from '@vueuse/core'
-import type { TTheme } from '@/types/theme'
+import type { TTheme } from '@/types/ui'
 import MobileLayout from '@/layouts/MobileLayout.vue'
 import { useRoute, useRouter } from 'vue-router'
 
-//Route
 const route = useRoute()
+
 const isLandingPage = computed(() => route.path === '/landing')
 
-//Theming
 const defaultGuiSettings = {
   THEME: "theme--light" as TTheme
 }

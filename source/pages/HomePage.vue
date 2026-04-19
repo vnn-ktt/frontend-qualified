@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Background from '@/components/animated/Background.vue'
+import Background from '@/ui/animated/Background.vue'
 </script>
 <template>
     <Background />

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia"
 import { ref, computed } from "vue"
-import { TTheme } from "@/types/theme";
+import { TTheme } from "@/types/ui";
 import type { TQuestion } from "@/types/question";
 
 export const useQuestionsStore = defineStore('question-data', () => {

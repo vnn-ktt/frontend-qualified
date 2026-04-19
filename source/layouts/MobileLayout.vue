@@ -2,16 +2,13 @@
   <div class="mobile-layout">
     <header class="header scan-horizontal">
       <div class="header-content">
-        <!-- Левый блок -->
         <div class="left-side">
           <button class="brand-btn" @click="goHome">
             <span class="brand-title">qualified</span>
           </button>
         </div>
 
-        <!-- Правый блок -->
         <div class="right-side">
-          <!-- Дополнительное меню появляется на планшетах -->
           <div class="desktop-nav">
             <button class="nav-btn" @click="goAbout">
               Documentation
@@ -27,7 +24,6 @@
             class="theme-toggle"
           />
 
-          <!-- Мобильное меню -->
           <Dropdown class="mobile-menu" :model="menuOpen" @show="menuOpen = true" @hide="menuOpen = false">
             <template #default="{ toggleMenu }">
               <button class="menu-btn" @click="toggleMenu">
@@ -62,7 +58,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import ThemeToggler from '@/components/togglers/ThemeToggler.vue'
+import ThemeToggler from '@/ui/togglers/ThemeToggler.vue'
 
 defineProps<{
   isDarkTheme: boolean
