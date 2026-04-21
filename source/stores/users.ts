@@ -1,19 +1,22 @@
-import { defineStore } from "pinia"
-import { reactive, ref, computed } from "vue"
-import { IUser } from "@/types/user";
+import { useStore } from "@nanostores/vue";
+import { atom, computed } from "nanostores";
+import type { IUser } from "@/types/user";
 
-export const useUsersStore = defineStore("user-data", () => {
-    const users = ref<IUser[]>([]);
-    
-    const getUsers = computed(() => users.value);
+const $users = atom<IUser[]>([]);
 
-    function setUsers(payload: IUser[]) {
-        users.value = payload;
-    };
+const $getUsers = computed($users, (users) => users);
+
+function setUsers(payload: IUser[]) {
+    $users.set(payload);
+}
+
+export const useUsersStore = () => {
+    const users = useStore($users);
+    const getUsers = useStore($getUsers);
 
     return {
         users,
         getUsers,
         setUsers
-    }
-})
+    };
+};

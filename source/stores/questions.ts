@@ -1,20 +1,22 @@
-import { defineStore } from "pinia"
-import { ref, computed } from "vue"
-import { TTheme } from "@/types/ui";
+import { useStore } from "@nanostores/vue";
+import { atom, computed } from "nanostores";
 import type { TQuestion } from "@/types/question";
 
-export const useQuestionsStore = defineStore('question-data', () => {
-    const questions = ref<TQuestion[]>([]);
+const $questions = atom<TQuestion[]>([]);
 
-    const getQuestions = computed(() => questions.value);
+const $getQuestions = computed($questions, (questions) => questions);
 
-    function setQuestions(payload: TQuestion[]) {
-        questions.value = payload;
-    }
+function setQuestions(payload: TQuestion[]) {
+    $questions.set(payload);
+}
+
+export const useQuestionsStore = () => {
+    const questions = useStore($questions);
+    const getQuestions = useStore($getQuestions);
 
     return {
         questions,
         getQuestions,
         setQuestions
-    }
-})
+    };
+};

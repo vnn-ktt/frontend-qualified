@@ -22,13 +22,11 @@ export default defineConfig({
       sass: {
         additionalData: `
           @use "@/assets/styles/mixins/gradients.sass" as gradients;
-          @use "@/assets/styles/mixins/breakpoints.sass" as breakpoints;
         `
       },
       scss: {
         additionalData: `
           @use "@/assets/styles/mixins/gradients.sass" as gradients;
-          @use "@/assets/styles/mixins/breakpoints.sass" as breakpoints;
         `
       }
     }

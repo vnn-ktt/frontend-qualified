@@ -1,332 +1,340 @@
+<script setup lang="ts">
+import { computed } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useAuth } from "@/composables/useAuth";
+import ThemeToggler from "@/ui/togglers/ThemeToggler.vue";
+import { RouteItems, RouteNames } from "@/router/types";
+
+const props = defineProps<{
+  isDarkTheme: boolean;
+}>();
+
+const emit = defineEmits<{
+  "toggle-theme": [];
+}>();
+
+const route = useRoute();
+const router = useRouter();
+const { user, isAuthenticated, logout } = useAuth();
+
+const pageTitle = computed(() => {
+  switch (route.name) {
+    case RouteNames.Home:
+      return "Dashboard";
+    case RouteNames.Login:
+      return "Login";
+    case RouteNames.Register:
+      return "Create account";
+    case RouteNames.Landing:
+    default:
+      return "Qualified";
+  }
+});
+
+const pageDescription = computed(() => {
+  if (route.name === RouteNames.Home) {
+    return "Track progress, review questions, and continue learning.";
+  }
+
+  if (route.name === RouteNames.Login || route.name === RouteNames.Register) {
+    return "Access your account and continue your learning streak.";
+  }
+
+  return "Mobile-first JavaScript and TypeScript interview training.";
+});
+
+const navItems = computed(() => {
+  if (isAuthenticated.value) {
+    return [
+      {
+        label: "Dashboard",
+        route: RouteItems.home,
+        active: route.path === RouteItems.home,
+      },
+      {
+        label: "Welcome",
+        route: RouteItems.landing,
+        active: route.path === RouteItems.landing,
+      },
+    ];
+  }
+
+  return [
+    {
+      label: "Welcome",
+      route: RouteItems.landing,
+      active: route.path === RouteItems.landing,
+    },
+    {
+      label: "Login",
+      route: RouteItems.login,
+      active: route.path === RouteItems.login,
+    },
+    {
+      label: "Register",
+      route: RouteItems.register,
+      active: route.path === RouteItems.register,
+    },
+  ];
+});
+
+const goTo = (target: string) => {
+  if (route.path === target) return;
+  router.push(target);
+};
+
+const handleThemeToggle = () => {
+  emit("toggle-theme");
+};
+
+const handleLogout = () => {
+  logout();
+  router.push(RouteItems.landing);
+};
+</script>
+
 <template>
   <div class="mobile-layout">
-    <header class="header scan-horizontal">
-      <div class="header-content">
-        <div class="left-side">
-          <button class="brand-btn" @click="goHome">
-            <span class="brand-title">qualified</span>
-          </button>
-        </div>
+    <header class="mobile-layout__header scan-horizontal">
+      <div class="mobile-layout__header-top">
+        <button class="mobile-layout__brand" @click="goTo(RouteItems.landing)">
+          <span class="mobile-layout__brand-badge">Q</span>
+          <span class="mobile-layout__brand-text">Qualified</span>
+        </button>
 
-        <div class="right-side">
-          <div class="desktop-nav">
-            <button class="nav-btn" @click="goAbout">
-              Documentation
-            </button>
-            <button class="nav-btn" @click="goSettings">
-              About
-            </button>
-          </div>
-
+        <div class="mobile-layout__actions">
           <ThemeToggler
-            :is-dark-theme="isDarkTheme"
-            @toggle-theme="toggleTheme"
-            class="theme-toggle"
+            :is-dark-theme="props.isDarkTheme"
+            class="mobile-layout__theme-toggle"
+            @toggle-theme="handleThemeToggle"
           />
 
-          <Dropdown class="mobile-menu" :model="menuOpen" @show="menuOpen = true" @hide="menuOpen = false">
-            <template #default="{ toggleMenu }">
-              <button class="menu-btn" @click="toggleMenu">
-                <i class="pi pi-ellipsis-v"></i>
-              </button>
-            </template>
-            <template #content>
-              <ul class="menu-list">
-                <li><a href="#" @click.prevent="handleMenuClick(goAbout)">
-                  <i class="pi pi-file"></i> Documentation
-                </a></li>
-                <li><a href="#" @click.prevent="handleMenuClick(goSettings)">
-                  <i class="pi pi-info-circle"></i> About
-                </a></li>
-                <li class="divider"></li>
-                <li><a href="#" @click.prevent="handleMenuClick(toggleTheme)">
-                  <i class="pi pi-moon"></i> Toggle Theme
-                </a></li>
-              </ul>
-            </template>
-          </Dropdown>
+          <button
+            v-if="isAuthenticated"
+            class="mobile-layout__ghost-btn"
+            @click="handleLogout"
+          >
+            Logout
+          </button>
         </div>
       </div>
+
+      <div class="mobile-layout__hero">
+        <div class="mobile-layout__hero-copy">
+          <p class="mobile-layout__eyebrow">Mobile first learning</p>
+          <h1 class="mobile-layout__title">{{ pageTitle }}</h1>
+          <p class="mobile-layout__description">
+            {{ pageDescription }}
+          </p>
+        </div>
+
+        <div v-if="isAuthenticated && user" class="mobile-layout__user-card">
+          <img
+            v-if="user.avatar"
+            :src="user.avatar"
+            :alt="user.name"
+            class="mobile-layout__avatar"
+          />
+          <div class="mobile-layout__user-meta">
+            <span class="mobile-layout__user-name">{{ user.name }}</span>
+            <span class="mobile-layout__user-level">
+              Level {{ user.level }} · {{ user.xp }} XP
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="mobile-layout__nav">
+        <button
+          v-for="item in navItems"
+          :key="item.route"
+          class="mobile-layout__nav-btn"
+          :class="{ 'mobile-layout__nav-btn--active': item.active }"
+          @click="goTo(item.route)"
+        >
+          {{ item.label }}
+        </button>
+      </nav>
     </header>
 
-    <main class="page-container">
-      <slot />
+    <main class="mobile-layout__content">
+      <RouterView />
     </main>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
-import ThemeToggler from '@/ui/togglers/ThemeToggler.vue'
-
-defineProps<{
-  isDarkTheme: boolean
-}>()
-
-const emit = defineEmits<{
-  'toggle-theme': []
-}>()
-
-const router = useRouter()
-const menuOpen = ref(false)
-
-const toggleTheme = () => {
-  emit('toggle-theme')
-  menuOpen.value = false
-}
-
-const goHome = () => {
-  router.push('/')
-  menuOpen.value = false
-}
-const goAbout = () => {
-  router.push('/about')
-  menuOpen.value = false
-}
-const goSettings = () => {
-  router.push('/settings')
-  menuOpen.value = false
-}
-
-const handleMenuClick = (callback: () => void) => {
-  callback()
-  menuOpen.value = false
-}
-</script>
-
 <style lang="sass" scoped>
 .mobile-layout
   min-height: 100vh
-  background: var(--cyber-bg-primary)
+  background: linear-gradient(180deg, rgba(var(--color-dark-rgb), 0.96) 0%, var(--cyber-bg-primary) 100%)
+  color: var(--color-text-primary)
 
-  @include breakpoints.media(telegram-tablet)
-    max-width: 1200px
-    margin: 0 auto
-
-.header
+.mobile-layout__header
   position: sticky
   top: 0
-  z-index: 100
+  z-index: 20
+  display: flex
+  flex-direction: column
+  gap: 1rem
+  padding: 1rem
+  backdrop-filter: blur(18px)
+  background: rgba(var(--color-dark-rgb), 0.78)
+  border-bottom: 1px solid rgba(var(--cyber-glow-rgb), 0.16)
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.2)
+
+.mobile-layout__header-top
   display: flex
   align-items: center
-  width: 100%
-  height: 70px
-  backdrop-filter: blur(15px)
-  background: rgba(var(--color-dark), 0.85)
-  border-bottom: 1px solid rgba(var(--cyber-glow-rgb), 0.25)
-  box-shadow: 0 0 20px rgba(var(--cyber-glow-rgb), 0.25)
-  transition: all 0.3s ease
+  justify-content: space-between
+  gap: 0.75rem
 
-  @include breakpoints.safe-area-top
-  padding-left: max(16px, env(safe-area-inset-left))
-  padding-right: max(16px, env(safe-area-inset-right))
-
-  @include breakpoints.media(md)
-    height: 80px
-
-  @include breakpoints.media(xl)
-    height: 90px
-
-  .header-content
-    width: 100%
-    display: flex
-    justify-content: space-between
-    align-items: center
-
-    @include breakpoints.telegram-container
-
-.left-side
-  display: flex
+.mobile-layout__brand
+  display: inline-flex
   align-items: center
-  gap: 16px
-
-  .brand-btn
-    padding: 8px 12px
-    border-radius: 8px
-    background: rgba(var(--color-primary-rgb), 0.1)
-    border: 1px solid rgba(var(--color-primary-rgb), 0.2)
-    transition: all 0.3s ease
-    cursor: pointer
-    color: var(--color-text-primary)
-    font-family: inherit
-    font-size: 1rem
-
-    &:hover
-      background: rgba(var(--color-primary-rgb), 0.2)
-      border-color: rgba(var(--color-primary-rgb), 0.4)
-      transform: translateY(-2px)
-
-    .brand-title
-      font-weight: 700
-      letter-spacing: 3px
-      text-transform: uppercase
-      text-shadow: 0 0 10px rgba(var(--cyber-glow-rgb), 0.3)
-
-      @include breakpoints.responsive-font(1rem, 1.5rem)
-
-      @include breakpoints.media(md, down)
-        letter-spacing: 2px
-
-.right-side
-  display: flex
-  align-items: center
-  gap: 12px
-
-  @include breakpoints.media(md)
-    gap: 16px
-
-  @include breakpoints.media(lg)
-    gap: 20px
-
-  .desktop-nav
-    display: none
-
-    @include breakpoints.media(md)
-      display: flex
-      gap: 12px
-
-    @include breakpoints.media(xxl)
-      gap: 16px
-
-  .mobile-menu
-    display: block
-
-    @include breakpoints.media(md)
-      display: none
-
-    .menu-btn
-      @include breakpoints.telegram-button
-      color: var(--cyber-glow)
-      background: transparent
-      border: none
-      cursor: pointer
-      padding: 6px
-      font-size: 1.2rem
-
-      &:hover
-        color: var(--color-text-primary)
-        background: rgba(var(--cyber-glow-rgb), 0.1)
-        border-radius: 6px
-
-    :deep(.menu-list)
-      list-style: none
-      margin: 0
-      padding: 8px 0
-      background: var(--cyber-bg-card)
-      border: 1px solid var(--cyber-border)
-      border-radius: 8px
-      min-width: 160px
-
-      li
-        &.divider
-          height: 1px
-          background: var(--cyber-border)
-          margin: 4px 0
-
-        a
-          display: flex
-          align-items: center
-          gap: 8px
-          padding: 10px 16px
-          color: var(--cyber-glow)
-          text-decoration: none
-          transition: all 0.3s ease
-
-          i
-            font-size: 0.9rem
-
-          &:hover
-            background: rgba(var(--cyber-glow-rgb), 0.1)
-            color: var(--color-accent)
-
-  .theme-toggle
-    display: none
-
-    @include breakpoints.media(md)
-      display: block
-
-.nav-btn
-  letter-spacing: 1px
-  text-transform: uppercase
-  font-size: 0.85rem
-  padding: 6px 12px
-  border-radius: 6px
-  transition: all 0.3s ease
-  background: transparent
+  gap: 0.75rem
+  padding: 0
   border: none
+  background: transparent
+  color: inherit
   cursor: pointer
+
+.mobile-layout__brand-badge
+  width: 2.2rem
+  height: 2.2rem
+  display: grid
+  place-items: center
+  border-radius: 0.8rem
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary))
+  color: white
+  font-weight: 800
+  box-shadow: 0 0 18px rgba(var(--color-primary-rgb), 0.24)
+
+.mobile-layout__brand-text
+  font-weight: 800
+  letter-spacing: 0.08em
+  text-transform: uppercase
+
+.mobile-layout__actions
+  display: flex
+  align-items: center
+  gap: 0.5rem
+
+.mobile-layout__ghost-btn
+  min-height: 2.4rem
+  padding: 0.6rem 0.85rem
+  border-radius: 0.85rem
+  border: 1px solid rgba(var(--cyber-glow-rgb), 0.2)
+  background: rgba(var(--cyber-glow-rgb), 0.06)
   color: var(--color-text-primary)
-  font-family: inherit
-
-  @include breakpoints.media(md, down)
-    font-size: 0.8rem
-    padding: 4px 8px
-
-  @include breakpoints.media(xxl)
-    font-size: 0.9rem
-    padding: 8px 16px
+  font-size: 0.85rem
+  cursor: pointer
+  transition: all 0.2s ease
 
   &:hover
-    color: var(--cyber-glow)
-    text-shadow: 0 0 8px rgba(var(--cyber-glow-rgb), 0.8)
-    transform: translateY(-1px)
-    background: rgba(var(--cyber-glow-rgb), 0.1)
+    border-color: rgba(var(--cyber-glow-rgb), 0.45)
+    background: rgba(var(--cyber-glow-rgb), 0.12)
 
-.page-container
-  padding: 16px
-  min-height: calc(100vh - 70px)
+.mobile-layout__hero
+  display: flex
+  flex-direction: column
+  gap: 1rem
 
-  @include breakpoints.safe-area-bottom
-  @include breakpoints.responsive-padding(16px, 32px)
+.mobile-layout__eyebrow
+  margin: 0 0 0.4rem
+  font-size: 0.75rem
+  text-transform: uppercase
+  letter-spacing: 0.12em
+  color: var(--color-text-secondary)
 
-  @include breakpoints.media(telegram-desktop)
-    padding: 24px
+.mobile-layout__title
+  margin: 0
+  font-size: clamp(1.8rem, 8vw, 2.5rem)
+  line-height: 1.05
 
-  @include breakpoints.media(xxl)
-    max-width: 1200px
-    margin: 0 auto
+.mobile-layout__description
+  margin: 0.55rem 0 0
+  color: var(--color-text-secondary)
+  line-height: 1.55
+  max-width: 42rem
 
-@media (max-width: 340px)
-  .brand-title
-    font-size: 0.9rem !important
-    letter-spacing: 1px !important
+.mobile-layout__user-card
+  display: flex
+  align-items: center
+  gap: 0.75rem
+  padding: 0.85rem 0.95rem
+  border-radius: 1rem
+  border: 1px solid rgba(var(--cyber-glow-rgb), 0.18)
+  background: rgba(var(--color-dark-rgb), 0.35)
 
-  .nav-btn
-    font-size: 0.75rem !important
-    padding: 4px 6px !important
+.mobile-layout__avatar
+  width: 2.8rem
+  height: 2.8rem
+  border-radius: 999px
+  object-fit: cover
+  border: 1px solid rgba(var(--cyber-glow-rgb), 0.25)
+  background: rgba(var(--color-dark-rgb), 0.5)
 
-@include breakpoints.mobile-portrait
-  .header
-    height: 60px
+.mobile-layout__user-meta
+  display: flex
+  flex-direction: column
+  min-width: 0
 
-  .page-container
-    padding: 12px
+.mobile-layout__user-name
+  font-weight: 700
 
-@include breakpoints.mobile-landscape
-  .header
-    height: 50px
+.mobile-layout__user-level
+  font-size: 0.85rem
+  color: var(--color-text-secondary)
 
-@include breakpoints.media(telegram-tablet, down)
-  .header
-    background: rgba(var(--color-dark), 0.95)
-    backdrop-filter: blur(20px)
+.mobile-layout__nav
+  display: grid
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr))
+  gap: 0.6rem
 
-  .page-container
-    padding-bottom: calc(16px + #{breakpoints.$telegram-bottom-bar})
+.mobile-layout__nav-btn
+  min-height: 2.9rem
+  border: 1px solid rgba(var(--cyber-glow-rgb), 0.14)
+  border-radius: 0.95rem
+  background: rgba(var(--cyber-glow-rgb), 0.05)
+  color: var(--color-text-primary)
+  font-weight: 600
+  cursor: pointer
+  transition: all 0.2s ease
 
-@include breakpoints.retina
-  .header
-    border-width: 0.5px
+  &:hover
+    background: rgba(var(--cyber-glow-rgb), 0.12)
+    border-color: rgba(var(--cyber-glow-rgb), 0.28)
 
-  .brand-title
-    text-shadow: 0 0 15px rgba(var(--cyber-glow-rgb), 0.4)
+.mobile-layout__nav-btn--active
+  background: linear-gradient(135deg, rgba(var(--color-primary-rgb), 0.26), rgba(var(--cyber-glow-rgb), 0.16))
+  border-color: rgba(var(--color-primary-rgb), 0.42)
+  box-shadow: 0 0 16px rgba(var(--color-primary-rgb), 0.18)
+
+.mobile-layout__content
+  width: min(100%, 1100px)
+  margin: 0 auto
+  padding: 1rem 1rem 2rem
 
 @supports (height: 100dvh)
   .mobile-layout
     min-height: 100dvh
 
-  .page-container
-    min-height: calc(100dvh - 70px)
+@media (min-width: 768px)
+  .mobile-layout__header
+    padding: 1.25rem 1.5rem
 
+  .mobile-layout__hero
+    flex-direction: row
+    align-items: flex-end
+    justify-content: space-between
+
+  .mobile-layout__hero-copy
+    max-width: 42rem
+
+  .mobile-layout__user-card
+    min-width: 15rem
+    justify-content: flex-start
+
+  .mobile-layout__content
+    padding: 1.5rem 1.5rem 3rem
 </style>

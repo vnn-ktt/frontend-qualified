@@ -1,68 +1,95 @@
-import { computed } from 'vue'
-import { useStorage } from '@vueuse/core'
-import { IUser } from '@/types/user'
+import { computed } from "vue";
+import { useStorage } from "@vueuse/core";
+import type { IUser } from "@/types/user";
+
+export const AUTH_STORAGE_KEY = "qualified-user";
+
+const createMockUser = (overrides: Partial<IUser>): IUser => {
+  const seed = overrides.name ?? overrides.email ?? "qualified-user";
+
+  return {
+    id: overrides.id ?? crypto.randomUUID(),
+    name: overrides.name ?? "Qualified User",
+    email: overrides.email ?? "user@qualified.dev",
+    avatar:
+      overrides.avatar ??
+      `https://api.dicebear.com/7.x/avataaars/svg?seed=${encodeURIComponent(seed)}`,
+    level: overrides.level ?? 1,
+    xp: overrides.xp ?? 0,
+    token: overrides.token ?? `qualified-token-${Date.now()}`,
+  };
+};
 
 export function useAuth() {
-  const user = useStorage<IUser | null>('user-data', null)
-  
-  const isAuthenticated = computed(() => !!user.value)
-  const userLevel = computed(() => user.value?.level || 1)
-  const userXP = computed(() => user.value?.xp || 0)
-  
-  const login = async (email: string, password: string): Promise<IUser> => {
+  const user = useStorage<IUser | null>(AUTH_STORAGE_KEY, null);
 
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    const mockUser: IUser = {
-      id: '1',
-      name: 'John Doe',
+  const isAuthenticated = computed(() => Boolean(user.value?.token));
+  const userLevel = computed(() => user.value?.level ?? 1);
+  const userXP = computed(() => user.value?.xp ?? 0);
+
+  const login = async (email: string, _password: string): Promise<IUser> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const nameFromEmail = email.split("@")[0] || "Qualified User";
+    const nextUser = createMockUser({
       email,
-      level: 1,
-      xp: 150,
-      avatar: 'https://api.dicebear.com/7.x/avataaars/svg?seed=John'
-    }
-    
-    user.value = mockUser
-    return mockUser
-  }
-  
-  const register = async (username: string, email: string, password: string): Promise<IUser> => {
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    const mockUser: IUser = {
-      id: '2',
+      name: nameFromEmail
+        .split(/[._-]/g)
+        .filter(Boolean)
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(" "),
+      level: user.value?.level ?? 1,
+      xp: user.value?.xp ?? 180,
+    });
+
+    user.value = nextUser;
+    return nextUser;
+  };
+
+  const register = async (
+    username: string,
+    email: string,
+    _password: string
+  ): Promise<IUser> => {
+    await new Promise((resolve) => setTimeout(resolve, 500));
+
+    const nextUser = createMockUser({
+      email,
       name: username,
-      email,
       level: 1,
       xp: 0,
-      avatar: `https://api.dicebear.com/7.x/avataaars/svg?seed=${username}`
-    }
-    
-    user.value = mockUser
-    return mockUser
-  }
-  
+    });
+
+    user.value = nextUser;
+    return nextUser;
+  };
+
   const logout = () => {
-    user.value = null
-  }
-  
+    user.value = null;
+  };
+
   const updateUser = (updates: Partial<IUser>) => {
-    if (user.value) {
-      user.value = { ...user.value, ...updates }
-    }
-  }
-  
+    if (!user.value) return;
+
+    user.value = {
+      ...user.value,
+      ...updates,
+    };
+  };
+
   const addXP = (amount: number) => {
-    if (user.value) {
-      user.value.xp += amount
-      
-      const newLevel = Math.floor(user.value.xp / 1000) + 1
-      if (newLevel > user.value.level) {
-        user.value.level = newLevel
-      }
-    }
-  }
-  
+    if (!user.value) return;
+
+    const nextXP = user.value.xp + amount;
+    const nextLevel = Math.floor(nextXP / 1000) + 1;
+
+    user.value = {
+      ...user.value,
+      xp: nextXP,
+      level: Math.max(user.value.level, nextLevel),
+    };
+  };
+
   return {
     user,
     isAuthenticated,
@@ -72,6 +99,6 @@ export function useAuth() {
     register,
     logout,
     updateUser,
-    addXP
-  }
+    addXP,
+  };
 }
